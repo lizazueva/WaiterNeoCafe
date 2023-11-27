@@ -1,0 +1,209 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgr"
+    tools:context="com.example.waiterneocafe.view.login.UserFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_back"
+        android:layout_width="26dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_about_you"
+        style="@style/TextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/text_about_you"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_back" />
+
+    <TextView
+        android:id="@+id/text_name"
+        style="@style/TextGrey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/text_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_about_you" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_backgr_grey"
+        app:boxStrokeWidth="1dp"
+        app:hintEnabled="false"
+        app:hintAnimationEnabled="false"
+        app:boxBackgroundMode="none"
+        app:startIconDrawable="@drawable/img_identification_card"
+        app:startIconTint="@color/grey_hint"
+        app:startIconContentDescription="@string/text_input_name"
+        app:startIconCheckable="true"
+        android:paddingVertical="2dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="23dp"
+            android:background="@drawable/button_backgr_grey"
+            android:hint="@string/text_our_name"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColorHint="@color/grey_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/text_surname"
+        style="@style/TextGrey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/text_surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        style="@style/MyTextInputLayoutStyle"
+        android:background="@drawable/button_backgr_grey"
+        app:boxStrokeWidth="0dp"
+        app:hintEnabled="false"
+        app:hintAnimationEnabled="false"
+        app:boxBackgroundMode="none"
+        app:startIconDrawable="@drawable/img_identification_card"
+        app:startIconTint="@color/grey_hint"
+        android:paddingVertical="2dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_surname">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="23dp"
+            android:background="@drawable/button_backgr_grey"
+            android:hint="@string/text_input_surname"
+            android:ems="10"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColorHint="@color/grey_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/text_date"
+            style="@style/TextGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/text_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            style="@style/MyTextInputLayoutStyle"
+            android:background="@drawable/button_backgr_grey"
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false"
+            app:hintAnimationEnabled="false"
+            app:boxBackgroundMode="none"
+            app:startIconDrawable="@drawable/img_calendar"
+            app:startIconTint="@color/grey_hint"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="23dp"
+                android:background="@drawable/button_backgr_grey"
+                android:hint="@string/text_input_date"
+                android:ems="10"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="@color/grey_hint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_enter"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_backgr_login"
+        android:text="@string/btn_enter"
+        android:textAllCaps="false"
+        android:textColor="#FBFBFB"
+        android:textSize="16dp"
+        android:enabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDate" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

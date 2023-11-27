@@ -33,6 +33,9 @@ class CodeFragment : Fragment() {
 
         binding.btnEnter.setOnClickListener {
             data()
+
+            //для теста
+            findNavController().navigate(R.id.action_codeFragment_to_userFragment)
         }
         binding.textSendAgain.setOnClickListener {
             repeatSentCode()

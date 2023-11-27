@@ -31,5 +31,17 @@
         <action
             android:id="@+id/action_codeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_codeFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.waiterneocafe.view.login.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_codeFragment"
+            app:destination="@id/codeFragment" />
     </fragment>
 </navigation>

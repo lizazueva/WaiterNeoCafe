@@ -10,4 +10,11 @@
     <string name="text_send_again">Отправить еще раз</string>
     <string name="btn_enter">Войти</string>
     <string name="text_code">Введите 4-х значный код,\n отправленный на номер %s</string>
+    <string name="text_about_you">Расскажите о себе</string>
+    <string name="text_name">Имя</string>
+    <string name="text_our_name">Введите ваше имя</string>
+    <string name="text_surname">Фамилия</string>
+    <string name="text_date">Дата рождения</string>
+    <string name="text_input_surname">Введите вашу фамилию</string>
+    <string name="text_input_date">01.01.1991</string>
 </resources>
