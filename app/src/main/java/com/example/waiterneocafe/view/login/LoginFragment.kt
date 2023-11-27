@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentLoginBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -41,6 +42,7 @@ class LoginFragment : Fragment() {
 
 
         binding.btnLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
 
 
         }

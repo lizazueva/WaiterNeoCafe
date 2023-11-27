@@ -7,4 +7,7 @@
     <string name="text_login">Логин</string>
     <string name="text_password">Пароль</string>
     <string name="btn_login">Получить код</string>
+    <string name="text_send_again">Отправить еще раз</string>
+    <string name="btn_enter">Войти</string>
+    <string name="text_code">Введите 4-х значный код,\n отправленный на номер %s</string>
 </resources>
