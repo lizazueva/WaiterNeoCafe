@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ClientNeoWaiter</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_input_name">Введите ваш логин</string>
+    <string name="text_enter">Вход</string>
+    <string name="text_login">Логин</string>
+    <string name="text_password">Пароль</string>
+    <string name="btn_login">Получить код</string>
+</resources>

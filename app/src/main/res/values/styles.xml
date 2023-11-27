@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeColor">@color/black</item>
+        <!-- Устанавливаем цвет полоски при вводе -->
+        <item name="boxStrokeErrorColor">@android:color/transparent</item>
+        <!-- Устанавливаем цвет курсора при вводе -->
+        <item name="colorAccent">@android:color/transparent</item>
+        <!-- Убрать текст hint при вводе -->
+        <item name="hintEnabled">false</item>
+        <item name="android:textColorSecondary">@color/error</item>
+        <item name="errorTextColor">@color/error</item>
+
+    </style>
+
+    <style name="TextTitle">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextGrey">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/grey_hint</item>
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+    </style>
+</resources>
