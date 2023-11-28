@@ -17,4 +17,11 @@
     <string name="text_date">Дата рождения</string>
     <string name="text_input_surname">Введите вашу фамилию</string>
     <string name="text_input_date">01.01.1991</string>
+    <string name="text_phone">Номер телефона</string>
+    <string name="text_sun_work">Дневная смена с 10:00 до 17:00</string>
+    <string name="text_moon_work">Вечерняя смена с 17:00 до 23:00</string>
+    <string name="text_minus_work">Выходной</string>
+    <string name="button_yes">Да</string>
+    <string name="button_no">Нет</string>
+    <string name="text_menu">Меню</string>
 </resources>

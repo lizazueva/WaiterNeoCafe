@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="box_stroke_width">2dp</dimen>
+    <dimen name="box_stroke_width">22dp</dimen>
 </resources>
