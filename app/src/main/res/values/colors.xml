@@ -8,4 +8,6 @@
     <color name="grey_hint">#C2C1C3</color>
     <color name="error">#FF4C4C</color>
     <color name="btn_no_active">#B5AFCB</color>
+    <color name="query_hint_color">#C2C1C3</color>
+    <color name="search">#F2F2F2</color>
 </resources>

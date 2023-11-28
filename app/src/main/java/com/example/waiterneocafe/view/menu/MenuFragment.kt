@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentMenuBinding
 import com.example.waiterneocafe.adapters.SliderAdapter
@@ -26,66 +28,48 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewPager()
-
-
+        setUpFragment()
+        showStartMenuFragment()
+        setUpListeners()
+    }
+    private fun setUpListeners() {
+        binding.imageNotification.setOnClickListener {
+            findNavController().navigate(R.id.action_menuFragment_to_notificationsFragment)
+        }
+        binding.imageProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_menuFragment_to_profileFragment)
+        }
     }
 
-    private fun viewPager() {
-        val tabLayout = binding.tabLayout
-        val viewPager2 = binding.pager
-        val tabArray = arrayOf(
-            "Кофе",
-            "Выпечка",
-            "Коктейли",
-            "Десерты",
-            "Чай"
-        )
-        val adapter = SliderAdapter(childFragmentManager, lifecycle)
-        viewPager2.adapter = adapter
+    private fun showStartMenuFragment() {
+        val transaction = childFragmentManager.beginTransaction()
+        val fragment = TabMenuFragment()
+        transaction.replace(R.id.fragment_start_menu, fragment)
+        transaction.commit()
+    }
 
-        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.text = tabArray[position]
-        }.attach()
-
-        tabLayout.getTabAt(0)?.select()
-
-        for (i in 0 until tabArray.size) {
-            val tab = tabLayout.getTabAt(i)
-            when (i) {
-                0 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_coffee)
-                1 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_cooki)
-                2 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_cocktails)
-                3 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_desert)
-                4 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_tea)
-                else -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
+    private fun setUpFragment() {
+        binding.searchMenu.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
             }
-            if (i != 0) {
-                tab?.view?.background?.alpha = 120
-            }
-        }
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    when (it.position) {
-                        0 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_coffee)
-                        1 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_cooki)
-                        2 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_cocktails)
-                        3 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_desert)
-                        4 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_tea)
-                        // Добавьте кейсы для других вкладок
-                        else -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
-                    }
+            override fun onQueryTextChange(p0: String?): Boolean {
+                val query = p0?.trim()
+                if (query.isNullOrEmpty()) {
+                    val transaction = childFragmentManager.beginTransaction()
+                    val fragment = TabMenuFragment()
+                    transaction.replace(R.id.fragment_start_menu, fragment)
+                    transaction.commit()
+                } else {
+                    val transaction = childFragmentManager.beginTransaction()
+                    val fragment = SearchFragment()
+                    transaction.replace(R.id.fragment_start_menu, fragment)
+                    transaction.commit()
                 }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tab?.view?.background?.alpha = 120
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
+                return true
             }
         })
     }
+
 }

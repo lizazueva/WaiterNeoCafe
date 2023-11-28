@@ -27,7 +27,12 @@
     </style>
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:searchIcon">@drawable/icn_search</item>
         <item name="queryBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="QueryHintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/query_hint_color</item>
     </style>
 
     <style name="TabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
