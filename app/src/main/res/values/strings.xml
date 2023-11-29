@@ -26,4 +26,6 @@
     <string name="text_menu">Меню</string>
     <string name="text_no_notifications">Уведомлений нет</string>
     <string name="text_order">Заказы</string>
+    <string name="text_busy">Занято</string>
+    <string name="text_free">Свободно</string>
 </resources>
