@@ -61,7 +61,7 @@ class TabMenuFragment : Fragment() {
                 else -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
             }
             if (i != 0) {
-                tab?.view?.background?.alpha = 120
+                tab?.view?.background?.alpha = 90
             }
         }
 
@@ -81,7 +81,7 @@ class TabMenuFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tab?.view?.background?.alpha = 160
+                tab?.view?.background?.alpha = 90
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
