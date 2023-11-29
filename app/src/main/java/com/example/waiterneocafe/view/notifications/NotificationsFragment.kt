@@ -47,6 +47,7 @@ class NotificationsFragment : Fragment() {
         binding.textClearAll.setOnClickListener {
             adapterNotifications.deleteAllItems()
             binding.textNoNotifications.isVisible = true
+            binding.textClearAll.isVisible = false
 
         }
 

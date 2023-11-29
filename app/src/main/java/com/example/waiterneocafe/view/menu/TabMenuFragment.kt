@@ -74,7 +74,6 @@ class TabMenuFragment : Fragment() {
                         2 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_cocktails)
                         3 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_desert)
                         4 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_tea)
-                        // Добавьте кейсы для других вкладок
                         else -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
                     }
                 }
