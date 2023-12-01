@@ -1,16 +1,24 @@
 package com.example.waiterneocafe.view.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentCodeBinding
+import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.viewModel.CodeViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CodeFragment : Fragment() {
     private lateinit var binding: FragmentCodeBinding
+    private val codeViewModel: CodeViewModel by viewModel()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +40,7 @@ class CodeFragment : Fragment() {
         }
 
         binding.btnEnter.setOnClickListener {
-            data()
+//            data()
 
             //для теста
             findNavController().navigate(R.id.action_codeFragment_to_userFragment)
@@ -43,6 +51,20 @@ class CodeFragment : Fragment() {
     }
 
     private fun repeatSentCode() {
+        codeViewModel.resendCode()
+        codeViewModel.resendCodeResult.observe(viewLifecycleOwner){resendCodeResult->
+            when(resendCodeResult){
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Код отправлен повторно", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), "Не удалось отправить код", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }
 
     }
 
@@ -52,7 +74,33 @@ class CodeFragment : Fragment() {
         val codeInput3 = binding.editCode3.text.toString().trim()
         val codeInput4 = binding.editCode4.text.toString().trim()
         val code = "$codeInput1$codeInput2$codeInput3$codeInput4"
+        codeViewModel.confirmLogin(code)
+        observePhone()
 
+    }
+
+    private fun observePhone() {
+        codeViewModel.token.observe(viewLifecycleOwner) { token ->
+            when (token) {
+                is Resource.Success -> {
+                    findNavController().navigate(R.id.action_codeFragment_to_userFragment)
+                }
+
+                is Resource.Error -> {
+                    binding.textErrorCode.setText("Код введен неверно, попробуйте еще раз")
+                    binding.textErrorCode.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.error
+                        )
+                    )
+                }
+
+                is Resource.Loading -> {
+
+                }
+            }
+        }
     }
 
     private fun setUpTextPhone() {
