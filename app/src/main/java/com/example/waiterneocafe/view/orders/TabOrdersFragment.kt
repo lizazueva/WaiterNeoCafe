@@ -5,8 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentTabOrdersBinding
+import com.example.waiterneocafe.adapters.AdapterStatusOrders
+import com.example.waiterneocafe.adapters.SliderAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class TabOrdersFragment : Fragment() {
 
@@ -18,6 +24,72 @@ class TabOrdersFragment : Fragment() {
     ): View? {
         binding = FragmentTabOrdersBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewPager()
+    }
+
+    private fun viewPager() {
+        val tabLayout = binding.tabLayout
+        val viewPager2 = binding.pager
+        val tabArray = arrayOf(
+            "Все",
+            "Новый",
+            "В процессе",
+            "Готово",
+            "Отменено",
+            "Завершено"
+        )
+        val adapter = AdapterStatusOrders(childFragmentManager, lifecycle)
+        viewPager2.adapter = adapter
+
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            tab.text = tabArray[position]
+        }.attach()
+
+        tabLayout.getTabAt(0)?.select()
+
+        for (i in 0 until tabArray.size) {
+            val tab = tabLayout.getTabAt(i)
+            when (i) {
+                0 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_all)
+                1 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_new)
+                2 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_in_progress)
+                3 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_ready)
+                4 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_canceled)
+                5 -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_completed)
+                else -> tab?.view?.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
+            }
+            if (i != 0) {
+                tab?.view?.background?.alpha = 90
+            }
+        }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    when (it.position) {
+                        0 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_all)
+                        1 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_new)
+                        2 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_in_progress)
+                        3 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_ready)
+                        4 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_canceled)
+                        5 -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.tab_indicator_status_completed)
+                        else -> it.view.background = ContextCompat.getDrawable(requireContext(), R.drawable.default_tab_indicator)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.view?.background?.alpha = 90
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
 }

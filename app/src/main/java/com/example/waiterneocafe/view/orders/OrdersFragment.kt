@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentOrdersBinding
 import com.example.waiterneocafe.adapters.SliderAdapterOrders
@@ -34,7 +35,13 @@ class OrdersFragment : Fragment() {
     }
 
 
-    fun setUpListeners() {
+    private fun setUpListeners() {
+        binding.imageNotification.setOnClickListener {
+            findNavController().navigate(R.id.action_ordersFragment_to_notificationsFragment)
+        }
+        binding.imageProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_ordersFragment_to_profileFragment)
+        }
     }
 
     private fun viewPager() {

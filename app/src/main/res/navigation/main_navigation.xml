@@ -21,12 +21,26 @@
         android:id="@+id/newOrderFragment"
         android:name="com.example.waiterneocafe.view.newOrder.NewOrderFragment"
         android:label="fragment_new_order"
-        tools:layout="@layout/fragment_new_order" />
+        tools:layout="@layout/fragment_new_order" >
+        <action
+            android:id="@+id/action_newOrderFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_newOrderFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.example.waiterneocafe.view.orders.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_ordersFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.example.waiterneocafe.view.notifications.NotificationsFragment"
@@ -35,6 +49,12 @@
         <action
             android:id="@+id/action_notificationsFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -44,5 +64,11 @@
         <action
             android:id="@+id/action_profileFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
     </fragment>
 </navigation>
