@@ -35,5 +35,12 @@ class NewOrderFragment : Fragment() {
         binding.imageProfile.setOnClickListener {
             findNavController().navigate(R.id.action_newOrderFragment_to_profileFragment)
         }
+        binding.includeTable.cardForTable1.setOnClickListener {
+            val id = 1
+            val bundle = Bundle().apply {
+                putInt("id", id)
+            }
+            findNavController().navigate(R.id.action_newOrderFragment_to_newOrderChosedTableFragment, bundle)
+        }
     }
 }

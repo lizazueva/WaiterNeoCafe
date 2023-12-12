@@ -1,4 +1,4 @@
-package com.example.waiterneocafe.view.menu
+package com.example.waiterneocafe.view.newOrder
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,17 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.clientneowaiter.databinding.FragmentSearchBinding
+import com.example.clientneowaiter.R
+import com.example.clientneowaiter.databinding.FragmentNewOrderChosedTableBinding
+import com.example.clientneowaiter.databinding.FragmentSearchNewOrderBinding
+import com.example.waiterneocafe.adapters.AdapterMenu
+import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
 import com.example.waiterneocafe.adapters.AdapterSearch
+import com.example.waiterneocafe.adapters.AdapterSearchOrder
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.utils.Resource
 import com.example.waiterneocafe.viewModel.MenuViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class SearchFragment : Fragment() {
+class SearchNewOrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
-    private lateinit var adapterProduct: AdapterSearch
+    private lateinit var binding: FragmentSearchNewOrderBinding
+    private lateinit var adapterProduct: AdapterSearchOrder
     private val menuViewModel: MenuViewModel by sharedViewModel()
 
 
@@ -25,17 +30,16 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding = FragmentSearchNewOrderBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeSearchResult()
 
-    }
 
+    }
 
     private fun observeSearchResult() {
         menuViewModel.searchItems.observe(viewLifecycleOwner) { searchResult ->
@@ -76,7 +80,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun setUpAdapter(searchItems: List<SearchResultResponse>) {
-        adapterProduct = AdapterSearch()
+        adapterProduct = AdapterSearchOrder()
         binding.recyclerSearch.adapter = adapterProduct
         binding.recyclerSearch.layoutManager = LinearLayoutManager(requireContext())
         adapterProduct.differ.submitList(searchItems)

@@ -52,7 +52,11 @@ class RetrofitInstance {
             val path = request.url.encodedPath
             return path.endsWith("my-profile/")||
                     path.endsWith("resend-code/")||
-                    path.endsWith("edit-profile/")
+                    path.endsWith("edit-profile/")||
+                    path.contains("customers/menu") && request.method == "GET"||
+                    path.endsWith("customers/categories/")||
+                    path.contains("customers/search") && request.method == "GET"
+
 
         }
     }

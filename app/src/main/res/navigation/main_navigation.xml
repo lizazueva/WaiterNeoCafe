@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_newOrderFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_newOrderFragment_to_newOrderChosedTableFragment"
+            app:destination="@id/newOrderChosedTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
@@ -55,6 +58,9 @@
         <action
             android:id="@+id/action_notificationsFragment_to_newOrderFragment"
             app:destination="@id/newOrderFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_newOrderChosedTableFragment"
+            app:destination="@id/newOrderChosedTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -70,5 +76,17 @@
         <action
             android:id="@+id/action_profileFragment_to_ordersFragment"
             app:destination="@id/ordersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newOrderChosedTableFragment"
+        android:name="com.example.waiterneocafe.view.newOrder.NewOrderChosedTableFragment"
+        android:label="fragment_new_order_chosed_table"
+        tools:layout="@layout/fragment_new_order_chosed_table" >
+        <action
+            android:id="@+id/action_newOrderChosedTableFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
+        <action
+            android:id="@+id/action_newOrderChosedTableFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
     </fragment>
 </navigation>

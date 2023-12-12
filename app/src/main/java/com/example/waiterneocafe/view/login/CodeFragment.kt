@@ -42,7 +42,7 @@ class CodeFragment : Fragment() {
         binding.btnEnter.setOnClickListener {
 //            data()
 
-            //для теста
+//            //для теста
             findNavController().navigate(R.id.action_codeFragment_to_userFragment)
         }
         binding.textSendAgain.setOnClickListener {
@@ -74,8 +74,22 @@ class CodeFragment : Fragment() {
         val codeInput3 = binding.editCode3.text.toString().trim()
         val codeInput4 = binding.editCode4.text.toString().trim()
         val code = "$codeInput1$codeInput2$codeInput3$codeInput4"
-        codeViewModel.confirmLogin(code)
-        observePhone()
+//        codeViewModel.confirmLogin(code)
+//        observePhone()
+        codeViewModel.confirmLogin2(code) { isInStock ->
+            if (isInStock) {
+                findNavController().navigate(R.id.action_codeFragment_to_userFragment)
+            } else {
+                binding.textErrorCode.setText("Код введен неверно, попробуйте еще раз")
+                binding.textErrorCode.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.error
+                    )
+                )
+            }
+        }
+//        confirmLogin(code)
 
     }
 

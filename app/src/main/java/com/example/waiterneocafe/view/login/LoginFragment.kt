@@ -55,40 +55,40 @@ class LoginFragment : Fragment() {
 
 
         binding.btnLogin.setOnClickListener {
-            //для теста
-            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
+//            для теста
+//            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
+//
+            binding.btnLogin.setOnClickListener {
 
-//            binding.btnLogin.setOnClickListener {
-//
-//                //для теста
-//                val password = binding.textInputName.text.toString()
-//                val username = binding.textInputPassword.text.toString()
-//
-//                lifecycleScope.launch {
-//                    try {
-//                        val response = RetrofitInstance.api.login2(LoginRequest(password, username))
-//
-//                        if (response.isSuccessful) {
-//                            val access = response.body()?.access
-//                            access?.let { Utils.access_token = it }
-//
-//                            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
-//
-//                        } else {
-//                            val error = response.body()?.detail
-//                            withContext(Dispatchers.Main) {
-//                                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-//                            }
-//                            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-//                        }
-//                    } catch (e: Exception) {
-//                        // Обработка исключения
-//                    }
-//                }
+                //для теста
+                val password = binding.textInputName.text.toString()
+                val username = binding.textInputPassword.text.toString()
+
+                lifecycleScope.launch {
+                    try {
+                        val response = RetrofitInstance.api.login2(LoginRequest(password, username))
+
+                        if (response.isSuccessful) {
+                            val access = response.body()?.access
+                            access?.let { Utils.access_token = it }
+
+                            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
+
+                        } else {
+                            val error = response.body()?.detail
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                            }
+                            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        // Обработка исключения
+                    }
+                }
 
 
 //            data()
-//            }
+            }
         }
     }
 
@@ -104,13 +104,14 @@ class LoginFragment : Fragment() {
             loginViewModel.preToken.observe(viewLifecycleOwner){ preToken->
                 when(preToken) {
                     is Resource.Success ->{
-                        findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id == R.id.loginFragment) {
+                            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
+                        }
                     }
                     is Resource.Error ->{
-                        Toast.makeText(
-                            requireContext(),
-                            "Неуспешная авторизация",
-                            Toast.LENGTH_SHORT).show()
+                        val errorMessage = "Неуспешная авторизация"
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading ->{
 

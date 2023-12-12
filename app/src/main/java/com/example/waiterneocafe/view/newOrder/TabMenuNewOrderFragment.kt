@@ -1,85 +1,49 @@
-package com.example.waiterneocafe.view.menu
+package com.example.waiterneocafe.view.newOrder
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.clientneowaiter.R
-import com.example.clientneowaiter.databinding.FragmentTabMenuBinding
+import com.example.clientneowaiter.databinding.FragmentNewOrderChosedTableBinding
+import com.example.clientneowaiter.databinding.FragmentTabMenuNewOrderBinding
 import com.example.waiterneocafe.adapters.SliderAdapter
-import com.example.waiterneocafe.model.menu.Products
-import com.example.waiterneocafe.utils.Resource
-import com.example.waiterneocafe.viewModel.MenuViewModel
+import com.example.waiterneocafe.adapters.SliderAdapterNewOrder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TabMenuFragment : Fragment() {
+class TabMenuNewOrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentTabMenuBinding
-    private val menuViewModel: MenuViewModel by viewModel()
-
+    private lateinit var binding: FragmentTabMenuNewOrderBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTabMenuBinding.inflate(inflater, container, false)
+        binding = FragmentTabMenuNewOrderBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpListeners()
-        dataCategories()
-        observeCategories()
-
+        viewPager()
 
 
     }
 
-    private fun dataCategories() {
-        menuViewModel.getCategories()
-    }
-
-    private fun observeCategories() {
-        menuViewModel.categories.observe(viewLifecycleOwner){categories ->
-            when(categories){
-                is Resource.Success ->{
-                    val categoryList = categories.data
-                    categoryList?.let { categories ->
-//                        val selectPosition = arguments?.getInt("id")
-                        viewPager(categories)
-                    }
-
-                }
-                is Resource.Error ->{
-                    categories.message?.let {
-                        Toast.makeText(requireContext(),
-                            "Не удалось загрузить позиции по категориям",
-                            Toast.LENGTH_SHORT).show()
-                    }
-                }
-                is Resource.Loading ->{
-
-                }
-            }
-        }
-    }
-
-    private fun setUpListeners() {
-
-    }
-
-    private fun viewPager(menuCategory: List<Products.Category>) {
+    private fun viewPager() {
         val tabLayout = binding.tabLayout
         val viewPager2 = binding.pager
-        val tabArray = menuCategory.map { it.name }.toTypedArray()
-
-        val adapter = SliderAdapter(childFragmentManager, lifecycle, menuCategory)
+        val tabArray = arrayOf(
+            "Кофе",
+            "Выпечка",
+            "Коктейли",
+            "Десерты",
+            "Чай"
+        )
+        val adapter = SliderAdapterNewOrder(childFragmentManager, lifecycle)
         viewPager2.adapter = adapter
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->

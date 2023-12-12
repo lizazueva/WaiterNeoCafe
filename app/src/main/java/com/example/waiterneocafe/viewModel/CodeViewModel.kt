@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class CodeViewModel (private val repository: Repository): ViewModel() {
 
 
-    private  val _resendCodeResult: MutableLiveData<Resource<String>> = MutableLiveData()
+    private val _resendCodeResult: MutableLiveData<Resource<String>> = MutableLiveData()
     val resendCodeResult: LiveData<Resource<String>>
         get() = _resendCodeResult
 
@@ -22,12 +22,13 @@ class CodeViewModel (private val repository: Repository): ViewModel() {
     private val _token: MutableLiveData<Resource<String>> = MutableLiveData()
     val token: LiveData<Resource<String>>
         get() = _token
-    private fun saveToken(response: String){
+
+    private fun saveToken(response: String) {
         _token.postValue(Resource.Success(response))
     }
 
 
-    fun confirmLogin (code: String){
+    fun confirmLogin(code: String) {
         val codeAuth = CodeAuth(code)
         _token.postValue(Resource.Loading())
         viewModelScope.launch {
@@ -52,26 +53,55 @@ class CodeViewModel (private val repository: Repository): ViewModel() {
         }
     }
 
-    fun resendCode(){
-        _resendCodeResult.postValue(Resource.Loading())
+    fun confirmLogin2(code: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
-                val request = repository.resendCode()
-                if (request.isSuccessful) {
-                    val responseBody = request.body()
+                val pre_token = Utils.pre_token
+                val codeAuth = CodeAuth(code)
+                val response = repository.confirmLogin(pre_token, codeAuth)
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
                     if (responseBody != null) {
-                        _resendCodeResult.postValue(Resource.Success(responseBody.detail))
+                        Utils.access_token = responseBody.access
                     }
-                    Log.d("resendCode", "Successful: $responseBody")
-                }else{
-                    val errorBody = request.errorBody()?.string()
-                    _resendCodeResult.postValue(
-                        Resource.Error(errorBody ?: "Ошибка повторной отправки кода"))
+                    Log.d("confirmPhone", "Successful: $responseBody")
+                    onResult(true)
+                } else {
+                    onResult(false)
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 Log.e("MyViewModel", "Ошибка кода: ${e.message}")
-                _resendCodeResult.postValue(Resource.Error(e.message ?: "Ошибка повторной отправки кода"))
+                onResult(false)
             }
         }
     }
-}
+
+        fun resendCode() {
+            _resendCodeResult.postValue(Resource.Loading())
+            viewModelScope.launch {
+                try {
+                    val pre_token = Utils.pre_token
+                    val request = repository.resendCode(pre_token)
+                    if (request.isSuccessful) {
+                        val responseBody = request.body()
+                        if (responseBody != null) {
+                            _resendCodeResult.postValue(Resource.Success(responseBody.detail))
+                        }
+                        Log.d("resendCode", "Successful: $responseBody")
+                    } else {
+                        val errorBody = request.errorBody()?.string()
+                        _resendCodeResult.postValue(
+                            Resource.Error(errorBody ?: "Ошибка повторной отправки кода")
+                        )
+                    }
+                } catch (e: Exception) {
+                    Log.e("MyViewModel", "Ошибка кода: ${e.message}")
+                    _resendCodeResult.postValue(
+                        Resource.Error(
+                            e.message ?: "Ошибка повторной отправки кода"
+                        )
+                    )
+                }
+            }
+        }
+    }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clientneowaiter.databinding.ItemMenuBinding
-import com.example.waiterneocafe.model.menu.Product
+import com.example.waiterneocafe.model.menu.Products
 
 class AdapterMenu: RecyclerView.Adapter<AdapterMenu.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterMenu.ViewHolder {
@@ -17,8 +17,8 @@ class AdapterMenu: RecyclerView.Adapter<AdapterMenu.ViewHolder>() {
     override fun onBindViewHolder(holder: AdapterMenu.ViewHolder, position: Int) {
         val product = differ.currentList[position]
         with(holder.binding) {
-            textTitle.text = product.title
-            textAmount.text = "${product.amount} сом"
+            textTitle.text = product.name
+            textAmount.text = "${product.price.toDouble().toInt()} сом"
         }
     }
 
@@ -29,12 +29,12 @@ class AdapterMenu: RecyclerView.Adapter<AdapterMenu.ViewHolder>() {
         inner class ViewHolder(var binding: ItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
         }
 
-        private val differCallBack = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+        private val differCallBack = object : DiffUtil.ItemCallback<Products>() {
+            override fun areItemsTheSame(oldItem: Products, newItem: Products): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+            override fun areContentsTheSame(oldItem: Products, newItem: Products): Boolean {
                 return oldItem == newItem
             }
         }

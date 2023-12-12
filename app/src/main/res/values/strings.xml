@@ -30,4 +30,5 @@
     <string name="text_free">Свободно</string>
     <string name="text_choose">Выберите стол</string>
     <string name="text_new_order">Новый заказ</string>
+    <string name="text_choosed">Стол №%d</string>
 </resources>
