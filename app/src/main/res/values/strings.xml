@@ -31,4 +31,6 @@
     <string name="text_choose">Выберите стол</string>
     <string name="text_new_order">Новый заказ</string>
     <string name="text_choosed">Стол №%d</string>
+    <string name="text_result_sum">Итого: %d сом</string>
+    <string name="btn_add">Добавить</string>
 </resources>

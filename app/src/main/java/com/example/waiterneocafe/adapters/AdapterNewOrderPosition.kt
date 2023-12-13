@@ -26,7 +26,7 @@ class AdapterNewOrderPosition: RecyclerView.Adapter<AdapterNewOrderPosition.View
         val product = differ.currentList[position]
         with(holder.binding) {
             textTitle.text = product.name
-            textAmount.text = "${product.price} сом"
+            textAmount.text = "${product.price.toDouble().toInt()} сом"
             imageAdd.setOnClickListener {
                 onItemClickListener?.onAddClick(product, position)
             }

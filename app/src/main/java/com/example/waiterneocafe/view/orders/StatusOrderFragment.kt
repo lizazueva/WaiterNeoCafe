@@ -1,4 +1,4 @@
-package com.example.waiterneocafe.view.menu
+package com.example.waiterneocafe.view.orders
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

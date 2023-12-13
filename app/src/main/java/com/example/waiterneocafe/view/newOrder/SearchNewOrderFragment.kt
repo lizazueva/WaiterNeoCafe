@@ -7,12 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.clientneowaiter.R
-import com.example.clientneowaiter.databinding.FragmentNewOrderChosedTableBinding
 import com.example.clientneowaiter.databinding.FragmentSearchNewOrderBinding
-import com.example.waiterneocafe.adapters.AdapterMenu
-import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
-import com.example.waiterneocafe.adapters.AdapterSearch
 import com.example.waiterneocafe.adapters.AdapterSearchOrder
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.utils.Resource
