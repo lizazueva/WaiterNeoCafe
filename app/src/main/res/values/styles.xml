@@ -40,11 +40,14 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="AppBottomSheet" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/StyleBottomSheet</item>
-    </style>
 
-    <style name="StyleBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_dialog_coffee</item>
+    <style name="AppBottomSheet" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="behavior_peekHeight">48dp</item>
+        <item name="behavior_hideable">false</item>
+        <item name="backgroundInsetBottom">@android:color/holo_red_dark</item>
+
+        <item name="colorSurface">@android:color/holo_red_dark</item>
+        <item name="colorPrimary">@android:color/holo_red_dark</item>
     </style>
 </resources>

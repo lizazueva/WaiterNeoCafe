@@ -19,5 +19,4 @@ class TablesFragment : Fragment() {
         binding = FragmentTablesBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 }

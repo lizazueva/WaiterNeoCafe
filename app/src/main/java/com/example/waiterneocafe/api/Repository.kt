@@ -16,8 +16,4 @@ class Repository(private val api: Api) {
     suspend fun getProfile() = RetrofitInstance.api.getProfile()
     suspend fun getShedule() = RetrofitInstance.api.getShedule()
 
-
-
-
-
 }
