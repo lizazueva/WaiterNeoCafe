@@ -57,7 +57,7 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
 //            для теста
 //            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
-//
+
             binding.btnLogin.setOnClickListener {
 
                 //для теста

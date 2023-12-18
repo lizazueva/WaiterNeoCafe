@@ -7,6 +7,8 @@ import com.example.waiterneocafe.model.login.LoginRequest
 import com.example.waiterneocafe.model.login.LoginResponse
 import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
+import com.example.waiterneocafe.model.user.Shedule
+import com.example.waiterneocafe.model.user.UserInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -28,6 +30,14 @@ interface Api {
     suspend fun confirmLogin (@Header("Authorization") pre_token: String, @Body request: CodeAuth): Response<ConfirmLoginResponse>
     @GET("accounts/resend-code-with-pre-token/")
     suspend fun resendCode(@Header("Authorization") pre_token: String): Response<DetailRequest>
+    @GET("accounts/my-profile/")
+    suspend fun getProfile(): Response<UserInfo>
+    @GET("accounts/my-schedule/")
+    suspend fun getShedule(): Response<Shedule>
+
+
+
+
     @GET("customers/categories/")
     suspend fun getCategories(): Response<List<Products.Category>>
     @GET("customers/menu")

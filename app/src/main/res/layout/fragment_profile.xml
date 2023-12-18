@@ -262,63 +262,63 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/image_sun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/img_sun"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_work" />
-
-        <TextView
-            android:id="@+id/text_sun_work"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="9dp"
-            android:textColor="@color/black"
-            android:text="@string/text_sun_work"
-            android:textSize="16sp"
-            android:fontFamily="@font/sf_pro"
-            app:layout_constraintStart_toEndOf="@+id/image_sun"
-            app:layout_constraintTop_toBottomOf="@+id/text_work" />
-
-        <ImageView
-            android:id="@+id/image_moon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/img_moon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_sun" />
-
-        <TextView
-            android:id="@+id/text_moon_work"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="9dp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/sf_pro"
-            android:text="@string/text_moon_work"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/image_sun"
-            app:layout_constraintTop_toBottomOf="@+id/text_sun_work"/>
-
-        <ImageView
-            android:id="@+id/image_minus"
+            android:id="@+id/image_monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/img_minus"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_moon" />
+            app:layout_constraintTop_toBottomOf="@+id/text_work" />
 
         <TextView
-            android:id="@+id/text_minus_work"
+            android:id="@+id/text_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/black"
+            android:text="Выходной"
+            android:textSize="16sp"
+            android:fontFamily="@font/sf_pro"
+            app:layout_constraintStart_toEndOf="@+id/image_monday"
+            app:layout_constraintTop_toBottomOf="@+id/text_work" />
+
+        <ImageView
+            android:id="@+id/image_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_monday" />
+
+        <TextView
+            android:id="@+id/text_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro"
+            android:text="Выходной"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_monday"
+            app:layout_constraintTop_toBottomOf="@+id/text_monday"/>
+
+        <ImageView
+            android:id="@+id/image_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_tuesday" />
+
+        <TextView
+            android:id="@+id/text_wednesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -327,8 +327,100 @@
             android:fontFamily="@font/sf_pro"
             android:text="@string/text_minus_work"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/image_minus"
-            app:layout_constraintTop_toBottomOf="@+id/text_moon_work"/>
+            app:layout_constraintStart_toEndOf="@+id/image_wednesday"
+            app:layout_constraintTop_toBottomOf="@+id/text_tuesday"/>
+        <ImageView
+            android:id="@+id/image_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_wednesday" />
+
+        <TextView
+            android:id="@+id/text_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro"
+            android:text="@string/text_minus_work"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_thursday"
+            app:layout_constraintTop_toBottomOf="@+id/text_wednesday"/>
+
+        <ImageView
+            android:id="@+id/image_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_thursday" />
+
+        <TextView
+            android:id="@+id/text_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="11dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro"
+            android:text="@string/text_minus_work"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_friday"
+            app:layout_constraintTop_toBottomOf="@+id/text_thursday"/>
+
+        <ImageView
+            android:id="@+id/image_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_friday" />
+
+        <TextView
+            android:id="@+id/text_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro"
+            android:text="@string/text_minus_work"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_saturday"
+            app:layout_constraintTop_toBottomOf="@+id/text_friday"/>
+
+        <ImageView
+            android:id="@+id/image_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/img_minus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_saturday" />
+
+        <TextView
+            android:id="@+id/text_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro"
+            android:text="@string/text_minus_work"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/image_saturday"
+            app:layout_constraintTop_toBottomOf="@+id/text_saturday"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

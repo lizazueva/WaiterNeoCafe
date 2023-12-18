@@ -17,10 +17,17 @@ import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentUserBinding
 import com.example.waiterneocafe.MainActivity
 import com.example.waiterneocafe.utils.DateMask
+import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.viewModel.UserViewModel
 import com.google.android.material.textfield.TextInputLayout
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class UserFragment : Fragment() {
     private lateinit var binding: FragmentUserBinding
+    private  val userViewModel: UserViewModel by viewModel()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +39,37 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataProfile()
         setupListeners()
+    }
+
+    private fun dataProfile() {
+        userViewModel.getProfile()
+        userViewModel.user.observe(viewLifecycleOwner){user ->
+            when (user) {
+                is Resource.Success -> {
+                    binding.textInputName.setText(user.data?.first_name)
+                    binding.textInputSurname.setText(user.data?.last_name)
+                    val formattedDate =
+                        user.data?.let { convertDateFormatGet(it.birth_date, "yyyy-MM-dd", "MM.dd.yyyy") }
+                    binding.textInputDate.setText(formattedDate)
+                }
+                is Resource.Loading ->{
+
+                }
+                is Resource.Error ->{
+
+                }
+            }
+        }
+    }
+
+    private fun convertDateFormatGet(dateInput: String, inputFormat: String, outputFormat: String): String {
+        val inputFormatter = SimpleDateFormat(inputFormat, Locale.getDefault())
+        val outputFormatter = SimpleDateFormat(outputFormat, Locale.getDefault())
+        val parsedDate = inputFormatter.parse(dateInput)
+        return outputFormatter.format(parsedDate)
     }
 
     fun setupListeners() {
@@ -42,6 +79,7 @@ class UserFragment : Fragment() {
         val maskDate = DateMask(date)
         binding.textInputDate.addTextChangedListener(inputText)
         binding.textInputDate.addTextChangedListener(maskDate)
+
 
 
 

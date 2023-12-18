@@ -55,9 +55,8 @@ class RetrofitInstance {
                     path.endsWith("edit-profile/")||
                     path.contains("customers/menu") && request.method == "GET"||
                     path.endsWith("customers/categories/")||
-                    path.contains("customers/search") && request.method == "GET"
-
-
+                    path.contains("customers/search") && request.method == "GET"||
+                    path.endsWith("accounts/my-schedule/")
         }
     }
 
