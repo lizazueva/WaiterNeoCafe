@@ -52,11 +52,9 @@ class ProfileFragment : Fragment() {
             when (shedule) {
                 is Resource.Success -> {
                     shedule.data?.let { workdays ->
-                        for (workday in workdays) {
-                            updateScheduleUI(workday)
+                            updateScheduleUI(workdays)
                         }
                     }
-                }
                 is Resource.Loading ->{
 
                 }
@@ -68,7 +66,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun updateScheduleUI(schedule: Shedule.SheduleItem) {
+    private fun updateScheduleUI(schedule: Shedule) {
         schedule.workdays.forEach { workday ->
             when (workday.workday) {
                 1 -> {

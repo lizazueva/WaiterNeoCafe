@@ -1,14 +1,17 @@
 package com.example.waiterneocafe.api
 
+import com.example.waiterneocafe.model.MessageResponse
 import com.example.waiterneocafe.model.login.CodeAuth
 import com.example.waiterneocafe.model.login.ConfirmLoginResponse
 import com.example.waiterneocafe.model.login.DetailRequest
 import com.example.waiterneocafe.model.login.LoginRequest
 import com.example.waiterneocafe.model.login.LoginResponse
+import com.example.waiterneocafe.model.menu.CheckPosition
 import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserInfo
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -45,6 +48,8 @@ interface Api {
 
     @GET("customers/search")
     suspend fun getSearchResult(@Query("query") q: String): Response<List<SearchResultResponse>>
+    @POST("customers/check-if-item-can-be-made/")
+    fun checkPosition(@Body request: CheckPosition): Call<MessageResponse>
 
 
 }

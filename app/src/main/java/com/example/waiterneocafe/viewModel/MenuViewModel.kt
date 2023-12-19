@@ -6,10 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.waiterneocafe.api.Repository
+import com.example.waiterneocafe.model.MessageResponse
+import com.example.waiterneocafe.model.menu.CheckPosition
 import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.utils.Resource
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MenuViewModel(private val repository: Repository): ViewModel() {
     //получение списка позиций по категориям
@@ -39,6 +44,31 @@ class MenuViewModel(private val repository: Repository): ViewModel() {
 
     private fun saveSearchItems(response: List<SearchResultResponse>) {
         _searchItems.postValue(Resource.Success(response))
+    }
+
+    fun createProduct(
+        positionCheck: CheckPosition,
+        onSuccess: () -> Unit,
+        onError: (String?) -> Unit
+    ) {
+        repository.checkPosition(positionCheck)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Ошибка при выполнении запроса: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.e("AddProductViewModel", "Ошибка при выполнении запроса", t)
+                    onError("")
+                }
+            })
     }
 
     fun getSearchResult(q: String){

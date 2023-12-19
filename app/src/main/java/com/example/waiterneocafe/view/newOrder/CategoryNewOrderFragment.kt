@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.BottomSheetCoffeeBinding
 import com.example.clientneowaiter.databinding.FragmentCategoryNewOrderBinding
 import com.example.waiterneocafe.adapters.AdapterMilk1
@@ -15,7 +16,9 @@ import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
 import com.example.waiterneocafe.adapters.AdapterSyrup
 import com.example.waiterneocafe.model.Milk
 import com.example.waiterneocafe.model.Syrup
+import com.example.waiterneocafe.model.menu.CheckPosition
 import com.example.waiterneocafe.model.menu.Products
+import com.example.waiterneocafe.utils.OrderUtils
 import com.example.waiterneocafe.utils.Resource
 import com.example.waiterneocafe.viewModel.MenuViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -48,8 +51,23 @@ class CategoryNewOrderFragment : Fragment() {
             dataMenuCategory(categoryId)
         }
         observeMenuCategory()
+        dataOrderButton()
 
 
+    }
+
+    private fun dataOrderButton() {
+        val order = OrderUtils.getCartItems()
+        if (order.isNotEmpty()){
+            binding.layoutOrder.visibility = View.VISIBLE
+            val sum = order.sumBy { products ->
+                (products.price.toDouble() * products.quantityForCard).toInt()
+            }
+            binding.textAmount.text = "$sum c"
+            binding.textOrder.text = getString(R.string.text_order_btn, 1)
+        } else {
+            binding.layoutOrder.visibility = View.GONE
+        }
     }
 
     private fun setUpListeners() {
@@ -93,11 +111,34 @@ class CategoryNewOrderFragment : Fragment() {
             override fun onAddClick(data: Products, position: Int) {
                 if (data.category.name == "Кофе"){
                     dialog(requireContext(), data)
+                }
+                if (OrderUtils.isInCart(data.id)) {
+                    val quantity = OrderUtils.getQuantity(data.id) + 1
+                    checkPosition(data, CheckPosition(data.is_ready_made_product, data.id, quantity))
 
+                } else {
+                    checkPosition(data, CheckPosition(data.is_ready_made_product, data.id,1))
 
                 }
+
             }
         })
+    }
+
+    private fun checkPosition(data: Products, checkPosition: CheckPosition) {
+        menuViewModel.createProduct(checkPosition,
+            onSuccess = {
+                OrderUtils.addItem(data)
+                dataOrderButton()
+            },
+            onError = {
+                Toast.makeText(
+                    requireContext(),
+                    "Товара больше нет",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
     }
 
     fun dialog(context: Context, currentItem: Products) {

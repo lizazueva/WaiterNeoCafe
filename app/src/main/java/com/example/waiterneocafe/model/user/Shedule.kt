@@ -1,7 +1,6 @@
 package com.example.waiterneocafe.model.user
 
-class Shedule : ArrayList<Shedule.SheduleItem>(){
-    data class SheduleItem(
+class Shedule (
         val id: Int,
         val title: String,
         val workdays: List<Workday>
@@ -13,4 +12,3 @@ class Shedule : ArrayList<Shedule.SheduleItem>(){
             val workday: Int
         )
     }
-}
