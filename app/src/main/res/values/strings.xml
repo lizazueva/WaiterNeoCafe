@@ -35,4 +35,7 @@
     <string name="btn_add">Добавить</string>
     <string name="text_number_order">Заказ №%d</string>
     <string name="text_order_btn">Заказ №%d</string>
+    <string name="text_number">№ %d</string>
+    <string name="text_opened_time">Открыт в %s</string>
+    <string name="text_waiter">Официант:</string>
 </resources>

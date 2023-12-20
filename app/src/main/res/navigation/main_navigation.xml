@@ -88,5 +88,23 @@
         <action
             android:id="@+id/action_newOrderChosedTableFragment_to_notificationsFragment"
             app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_newOrderChosedTableFragment_to_orderGoodFragment"
+            app:destination="@id/orderGoodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderGoodFragment"
+        android:name="com.example.waiterneocafe.view.newOrder.OrderGoodFragment"
+        android:label="fragment_order_good"
+        tools:layout="@layout/fragment_order_good" >
+        <action
+            android:id="@+id/action_orderGoodFragment_to_newOrderChosedTableFragment"
+            app:destination="@id/newOrderChosedTableFragment" />
+        <action
+            android:id="@+id/action_orderGoodFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
+        <action
+            android:id="@+id/action_orderGoodFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment" />
     </fragment>
 </navigation>

@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.clientneowaiter.databinding.BottomSheetOrderBinding
 import com.example.clientneowaiter.databinding.FragmentSearchNewOrderBinding
+import com.example.waiterneocafe.adapters.AdapterOrder
 import com.example.waiterneocafe.adapters.AdapterSearchOrder
+import com.example.waiterneocafe.model.menu.CheckPosition
+import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
+import com.example.waiterneocafe.utils.OrderUtils
 import com.example.waiterneocafe.utils.Resource
 import com.example.waiterneocafe.viewModel.MenuViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SearchNewOrderFragment : Fragment() {
@@ -79,5 +85,40 @@ class SearchNewOrderFragment : Fragment() {
         binding.recyclerSearch.adapter = adapterProduct
         binding.recyclerSearch.layoutManager = LinearLayoutManager(requireContext())
         adapterProduct.differ.submitList(searchItems)
+        adapterProduct.setOnItemClick(object: AdapterSearchOrder.ListClickListener<SearchResultResponse>{
+
+            override fun onAddClick(data: SearchResultResponse, position: Int) {
+                if (OrderUtils.isInCart(data.id)) {
+                    val quantity = OrderUtils.getQuantity(data.id) + 1
+                    checkPositionOrder(
+                        data,
+                        CheckPosition(data.is_ready_made_product, data.id, quantity))
+                } else {
+                    checkPositionOrder(
+                        data, CheckPosition(
+                            data.is_ready_made_product,
+                            data.id,
+                            1
+                        ))
+                }
+            }
+
+        })
     }
-}
+
+    private fun checkPositionOrder(data: SearchResultResponse, checkPosition: CheckPosition) {
+            menuViewModel.createProduct(checkPosition,
+                onSuccess = {
+                    OrderUtils.addItem(data)
+                    adapterProduct.notifyDataSetChanged()
+                },
+                onError = {
+                    Toast.makeText(
+                        requireContext(),
+                        "Товара больше нет",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        }
+    }

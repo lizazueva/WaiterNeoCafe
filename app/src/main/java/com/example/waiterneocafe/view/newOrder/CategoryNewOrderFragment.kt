@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.BottomSheetCoffeeBinding
@@ -97,6 +98,13 @@ class CategoryNewOrderFragment : Fragment() {
         bindingOrder.imageCancel.setOnClickListener {
             dialog.dismiss()
             dataOrderButton()
+        }
+        bindingOrder.btnAdd.setOnClickListener {
+
+            //для теста
+            dialog.dismiss()
+            findNavController().navigate(R.id.action_newOrderChosedTableFragment_to_orderGoodFragment)
+
         }
 
     }
@@ -230,9 +238,9 @@ class CategoryNewOrderFragment : Fragment() {
         adapterProduct.setOnItemClick(object: AdapterNewOrderPosition.ListClickListener<Products> {
 
             override fun onAddClick(data: Products, position: Int) {
-                if (data.category.name == "Кофе"){
-                    dialog(requireContext(), data)
-                }
+//                if (data.category.name == "Кофе"){
+//                    dialog(requireContext(), data)
+//                }
                 if (OrderUtils.isInCart(data.id)) {
                     val quantity = OrderUtils.getQuantity(data.id) + 1
                     checkPosition(data, CheckPosition(

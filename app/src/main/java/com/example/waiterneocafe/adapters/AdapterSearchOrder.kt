@@ -6,9 +6,16 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clientneowaiter.databinding.ItemMewOrderPositionBinding
+import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 
 class AdapterSearchOrder: RecyclerView.Adapter<AdapterSearchOrder.ViewHolder>() {
+
+    var onItemClickListener: AdapterSearchOrder.ListClickListener<SearchResultResponse>? = null
+
+    fun setOnItemClick(listClickListener: AdapterSearchOrder.ListClickListener<SearchResultResponse>) {
+        this.onItemClickListener = listClickListener
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,11 +37,19 @@ class AdapterSearchOrder: RecyclerView.Adapter<AdapterSearchOrder.ViewHolder>() 
             textTitle.text = product.name
             val productAmount = product.price.toString()
             textAmount.text = "$productAmount c"
+
+            imageAdd.setOnClickListener {
+                onItemClickListener?.onAddClick(product, position)
+            }
         }
 
     }
 
     inner class ViewHolder (var binding: ItemMewOrderPositionBinding): RecyclerView.ViewHolder(binding.root) {
+    }
+
+    interface ListClickListener<T> {
+        fun onAddClick(data: T, position: Int)
     }
 
     private val differCallBack = object: DiffUtil.ItemCallback<SearchResultResponse>(){
