@@ -24,6 +24,7 @@
             android:text=""
             android:textColor="@color/black"
             android:textSize="19sp"
+            style="@style/TextTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +39,7 @@
             android:text=""
             android:textColor="@color/black"
             android:textSize="19sp"
+            style="@style/TextTitle"
             app:layout_constraintBottom_toTopOf="@+id/image_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +59,10 @@
             android:id="@+id/text_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="21dp"
+            android:layout_marginBottom="23dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:paddingStart="3dp"
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="16sp"

@@ -1,5 +1,6 @@
 package com.example.waiterneocafe.view.newOrder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,9 +11,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.BottomSheetCoffeeBinding
+import com.example.clientneowaiter.databinding.BottomSheetOrderBinding
 import com.example.clientneowaiter.databinding.FragmentCategoryNewOrderBinding
 import com.example.waiterneocafe.adapters.AdapterMilk1
 import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
+import com.example.waiterneocafe.adapters.AdapterOrder
 import com.example.waiterneocafe.adapters.AdapterSyrup
 import com.example.waiterneocafe.model.Milk
 import com.example.waiterneocafe.model.Syrup
@@ -30,7 +33,10 @@ class CategoryNewOrderFragment : Fragment() {
     private lateinit var adapterProduct: AdapterNewOrderPosition
     private lateinit var adapterMilk: AdapterMilk1
     private lateinit var adapterSyrup: AdapterSyrup
+    private lateinit var adapterOrder: AdapterOrder
+    private var order: List<Products> = emptyList()
     private val menuViewModel: MenuViewModel by viewModel()
+
 
 
     override fun onCreateView(
@@ -71,8 +77,123 @@ class CategoryNewOrderFragment : Fragment() {
     }
 
     private fun setUpListeners() {
+        binding.layoutOrder.setOnClickListener {
+            val order = OrderUtils.getCartItems()
+            val sum = order.sumBy { products ->
+                (products.price.toDouble() * products.quantityForCard).toInt()}
+            dialogOrder(requireContext(), order, sum)
+        }
 
     }
+
+    private fun dialogOrder(context: Context, order: List<Products>, sum: Int) {
+        val bindingOrder: BottomSheetOrderBinding =
+            BottomSheetOrderBinding.inflate(LayoutInflater.from(context))
+        val dialog = BottomSheetDialog(context)
+        dialog.setContentView(bindingOrder.root)
+        bindingOrder.textNumberOrder.text = getString(R.string.text_number_order, 1)
+        bindingOrder.textResultSum.text = getString(R.string.text_result_sum, sum)
+        setUpAdapterOrder(order, bindingOrder, dialog)
+        dialog.show()
+        bindingOrder.imageCancel.setOnClickListener {
+            dialog.dismiss()
+            dataOrderButton()
+        }
+
+    }
+
+    private fun setUpAdapterOrder(
+        order: List<Products>,
+        bindingOrder: BottomSheetOrderBinding,
+        dialog: BottomSheetDialog
+    ) {
+        adapterOrder = AdapterOrder()
+        bindingOrder.recyclerOrder.adapter = adapterOrder
+        bindingOrder.recyclerOrder.layoutManager = LinearLayoutManager(requireContext())
+        adapterOrder.differ.submitList(order)
+
+        adapterOrder.setOnItemClick(object: AdapterOrder.ListClickListener<Products>{
+            override fun onClick(data: Products, position: Int) {
+
+            }
+
+            override fun onAddClick(data: Products, position: Int) {
+                if (OrderUtils.isInCart(data.id)) {
+                    val quantity = OrderUtils.getQuantity(data.id) + 1
+                    checkPositionOrder(
+                        data,
+                        CheckPosition(data.is_ready_made_product, data.id, quantity),
+                        bindingOrder, dialog)
+                } else {
+                    checkPositionOrder(
+                        data, CheckPosition(
+                            data.is_ready_made_product,
+                            data.id,
+                            1
+                        ), bindingOrder, dialog
+                    )
+                }
+            }
+
+            override fun onRemoveClick(data: Products, position: Int) {
+                if (data.quantityForCard > 1) {
+                    OrderUtils.removeItem(data)
+                } else {
+                    OrderUtils.removeItem(data)
+                    adapterOrder.removeItem(position)
+                    // Обновление списка после удаления
+                }
+                setDataOrder(bindingOrder, dialog)
+            }
+
+        })
+
+    }
+
+    private fun setDataOrder(bindingOrder: BottomSheetOrderBinding, dialog: BottomSheetDialog) {
+        val order = OrderUtils.getCartItems()
+        if (order.isNullOrEmpty()) {
+            //закрыть диалог
+            dialog.dismiss()
+            dataOrderButton()
+
+
+        } else {
+            updateTotalAmount(order, bindingOrder)
+            dataOrderButton()
+        }
+    }
+
+    private fun updateTotalAmount(order: List<Products>, bindingOrder: BottomSheetOrderBinding) {
+        val totalOrderAmount =  order.sumBy { products ->
+            (products.price.toDouble() * products.quantityForCard).toInt()}
+        bindingOrder.textResultSum.text = getString(R.string.text_result_sum, totalOrderAmount)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun checkPositionOrder(
+        data: Products,
+        checkPosition: CheckPosition,
+        bindingOrder: BottomSheetOrderBinding,
+        dialog: BottomSheetDialog
+    ) {
+        menuViewModel.createProduct(checkPosition,
+            onSuccess = {
+                OrderUtils.addItem(data)
+                adapterOrder.notifyDataSetChanged()
+                setDataOrder(bindingOrder, dialog)
+
+            },
+            onError = {
+                Toast.makeText(
+                    requireContext(),
+                    "Товара больше нет",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+    }
+
     private fun dataMenuCategory(categoryId: Int) {
         menuViewModel.getMenuCategory(categoryId)
     }
@@ -83,6 +204,7 @@ class CategoryNewOrderFragment : Fragment() {
                 is Resource.Success ->{
                     menuCategory.data?.let { menu ->
                         setUpAdapter(menu)
+                        dataOrderButton()
                     }
 
                 }
@@ -114,11 +236,16 @@ class CategoryNewOrderFragment : Fragment() {
                 }
                 if (OrderUtils.isInCart(data.id)) {
                     val quantity = OrderUtils.getQuantity(data.id) + 1
-                    checkPosition(data, CheckPosition(data.is_ready_made_product, data.id, quantity))
-
+                    checkPosition(data, CheckPosition(
+                        data.is_ready_made_product,
+                        data.id,
+                        quantity))
                 } else {
-                    checkPosition(data, CheckPosition(data.is_ready_made_product, data.id,1))
-
+                    checkPosition(data, CheckPosition(
+                        data.is_ready_made_product,
+                        data.id,
+                        1))
+                    dataOrderButton()
                 }
 
             }
@@ -187,5 +314,10 @@ class CategoryNewOrderFragment : Fragment() {
         return fragment
     }
 }
+
+    override fun onResume() {
+        super.onResume()
+        dataOrderButton()
+    }
 
 }
