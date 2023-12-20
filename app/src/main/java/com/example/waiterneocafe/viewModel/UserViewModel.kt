@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.waiterneocafe.api.Repository
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserInfo
+import com.example.waiterneocafe.model.user.UserUpdate
 import com.example.waiterneocafe.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -31,6 +32,36 @@ class UserViewModel(private val repository: Repository): ViewModel() {
 
     private fun saveShedule (response: Shedule){
         _shedule.postValue(Resource.Success(response))
+    }
+
+    //обновление профиля
+
+    private val _updateResult: MutableLiveData<Resource<String>> = MutableLiveData()
+
+    val updateResult: LiveData<Resource<String>>
+        get() = _updateResult
+
+    fun updateProfile(last_name: String,
+                      first_name: String,
+                      birth_date: String){
+        viewModelScope.launch {
+            try {
+                val request = UserUpdate(birth_date, first_name, last_name)
+                val response = repository.updateProfile(request)
+                _updateResult.postValue(Resource.Loading())
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    responseBody?.detail?.let { _updateResult.postValue(Resource.Success(it)) }
+                    Log.d("updateProfile", "Successful: $responseBody")
+                }else{
+                    _updateResult.postValue(Resource.Error("Ошибка редактирования профиля"))
+                }
+            } catch (e: Exception) {
+                Log.e("MyViewModel", "Ошибка редактирования профиля: ${e.message}")
+
+                _updateResult.postValue(Resource.Error(e.message ?: "Ошибка редактирования профиля"))
+            }
+        }
     }
 
     fun getProfile(){

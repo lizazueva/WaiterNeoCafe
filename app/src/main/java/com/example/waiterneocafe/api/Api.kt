@@ -11,12 +11,14 @@ import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserInfo
+import com.example.waiterneocafe.model.user.UserUpdate
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -37,6 +39,8 @@ interface Api {
     suspend fun getProfile(): Response<UserInfo>
     @GET("accounts/my-schedule/")
     suspend fun getShedule(): Response<Shedule>
+    @PUT("accounts/update-waiter-profile/")
+    suspend fun updateProfile(@Body request: UserUpdate): Response<DetailRequest>
 
 
 

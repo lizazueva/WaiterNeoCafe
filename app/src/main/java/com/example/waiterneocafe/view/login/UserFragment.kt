@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
@@ -71,6 +72,12 @@ class UserFragment : Fragment() {
         val parsedDate = inputFormatter.parse(dateInput)
         return outputFormatter.format(parsedDate)
     }
+    private fun convertDateFormatSent(dateInput: String, inputFormat: String, outputFormat: String): String {
+        val inputFormatter = SimpleDateFormat(inputFormat, Locale.getDefault())
+        val outputFormatter = SimpleDateFormat(outputFormat, Locale.getDefault())
+        val parsedDate = inputFormatter.parse(dateInput)
+        return outputFormatter.format(parsedDate)
+    }
 
     fun setupListeners() {
         binding.textInputName.addTextChangedListener(inputText)
@@ -85,11 +92,41 @@ class UserFragment : Fragment() {
 
         binding.btnEnter.setOnClickListener {
             if (validateInput()) {
-
+                //для теста
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
+
+
+//                updateProfile()
             }
 
+        }
+    }
+
+    private fun updateProfile() {
+        val nameInput = binding.textInputName.text.toString().trim()
+        val surnameInput = binding.textInputSurname.text.toString().trim()
+        val dateInput = binding.textInputDate.text.toString().trim()
+        val formattedDate = convertDateFormatSent(dateInput, "MM.dd.yyyy", "yyyy-MM-dd")
+
+        userViewModel.updateProfile(formattedDate, nameInput, surnameInput)
+        userViewModel.updateResult.observe(viewLifecycleOwner){result->
+            when (result) {
+                is Resource.Success -> {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                }
+                is Resource.Loading ->{
+
+                }
+                is Resource.Error ->{
+                    result.message?.let {
+                        Toast.makeText(requireContext(),
+                            "Не удалось изменить профиль",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 

@@ -34,7 +34,6 @@ class CategoryNewOrderFragment : Fragment() {
     private lateinit var adapterMilk: AdapterMilk1
     private lateinit var adapterSyrup: AdapterSyrup
     private lateinit var adapterOrder: AdapterOrder
-    private var order: List<Products> = emptyList()
     private val menuViewModel: MenuViewModel by viewModel()
 
 
