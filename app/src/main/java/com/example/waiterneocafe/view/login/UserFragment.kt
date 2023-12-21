@@ -93,11 +93,11 @@ class UserFragment : Fragment() {
         binding.btnEnter.setOnClickListener {
             if (validateInput()) {
                 //для теста
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(requireContext(), MainActivity::class.java)
+//                startActivity(intent)
 
 
-//                updateProfile()
+                updateProfile()
             }
 
         }
@@ -109,7 +109,7 @@ class UserFragment : Fragment() {
         val dateInput = binding.textInputDate.text.toString().trim()
         val formattedDate = convertDateFormatSent(dateInput, "MM.dd.yyyy", "yyyy-MM-dd")
 
-        userViewModel.updateProfile(formattedDate, nameInput, surnameInput)
+        userViewModel.updateProfile(surnameInput, nameInput, formattedDate)
         userViewModel.updateResult.observe(viewLifecycleOwner){result->
             when (result) {
                 is Resource.Success -> {

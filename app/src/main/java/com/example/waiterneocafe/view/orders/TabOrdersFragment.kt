@@ -5,18 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentTabOrdersBinding
 import com.example.waiterneocafe.adapters.AdapterStatusOrders
-import com.example.waiterneocafe.adapters.SliderAdapter
+import com.example.waiterneocafe.model.order.Orders
+import com.example.waiterneocafe.viewModel.OrdersViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TabOrdersFragment : Fragment() {
 
     private lateinit var binding: FragmentTabOrdersBinding
+    private val ordersViewModel: OrdersViewModel by viewModel()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,10 +33,26 @@ class TabOrdersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewPager()
+        observeStatusList()
     }
 
-    private fun viewPager() {
+    private fun observeStatusList() {
+        ordersViewModel.getOrders(
+            onSuccess = {
+                viewPager(it)
+
+            },
+            onError = {
+                Toast.makeText(
+                    requireContext(),
+                    "Невозможно загрузить заказы",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+    }
+
+    private fun viewPager(orders: List<Orders.Order>) {
         val tabLayout = binding.tabLayout
         val viewPager2 = binding.pager
         val tabArray = arrayOf(
@@ -43,7 +63,7 @@ class TabOrdersFragment : Fragment() {
             "Отменено",
             "Завершено"
         )
-        val adapter = AdapterStatusOrders(childFragmentManager, lifecycle)
+        val adapter = AdapterStatusOrders(childFragmentManager, lifecycle, orders)
         viewPager2.adapter = adapter
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
@@ -51,6 +71,7 @@ class TabOrdersFragment : Fragment() {
         }.attach()
 
         tabLayout.getTabAt(0)?.select()
+
 
         for (i in 0 until tabArray.size) {
             val tab = tabLayout.getTabAt(i)
@@ -88,6 +109,7 @@ class TabOrdersFragment : Fragment() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+
             }
         })
     }

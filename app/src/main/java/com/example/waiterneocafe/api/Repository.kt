@@ -1,9 +1,12 @@
 package com.example.waiterneocafe.api
 
+import com.example.waiterneocafe.model.Table
 import com.example.waiterneocafe.model.login.CodeAuth
 import com.example.waiterneocafe.model.login.DetailRequest
 import com.example.waiterneocafe.model.login.LoginRequest
 import com.example.waiterneocafe.model.menu.CheckPosition
+import com.example.waiterneocafe.model.order.CreateOrder
+import com.example.waiterneocafe.model.order.Orders
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserUpdate
 import retrofit2.Response
@@ -21,6 +24,12 @@ class Repository(private val api: Api) {
     suspend fun getShedule() = RetrofitInstance.api.getShedule()
     fun checkPosition(request: CheckPosition) = RetrofitInstance.api.checkPosition(request)
     suspend fun updateProfile(request: UserUpdate) = RetrofitInstance.api.updateProfile(request)
+    suspend fun getTables() = RetrofitInstance.api.getTables()
+    suspend fun createOrder(request: CreateOrder) = RetrofitInstance.api.createOrder(request)
+    fun getOrders() = RetrofitInstance.api.getOrders()
+
+
+
 
 
 

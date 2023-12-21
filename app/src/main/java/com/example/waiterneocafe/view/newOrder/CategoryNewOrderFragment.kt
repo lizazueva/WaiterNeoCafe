@@ -3,6 +3,7 @@ package com.example.waiterneocafe.view.newOrder
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.BottomSheetCoffeeBinding
 import com.example.clientneowaiter.databinding.BottomSheetOrderBinding
 import com.example.clientneowaiter.databinding.FragmentCategoryNewOrderBinding
+import com.example.clientneowaiter.databinding.FragmentOrderGoodBinding
 import com.example.waiterneocafe.adapters.AdapterMilk1
 import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
 import com.example.waiterneocafe.adapters.AdapterOrder
@@ -22,20 +24,26 @@ import com.example.waiterneocafe.model.Milk
 import com.example.waiterneocafe.model.Syrup
 import com.example.waiterneocafe.model.menu.CheckPosition
 import com.example.waiterneocafe.model.menu.Products
+import com.example.waiterneocafe.model.order.CreateOrder
 import com.example.waiterneocafe.utils.OrderUtils
 import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.utils.Utils
 import com.example.waiterneocafe.viewModel.MenuViewModel
+import com.example.waiterneocafe.viewModel.NewOrderViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoryNewOrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentCategoryNewOrderBinding
+    private var _binding: FragmentCategoryNewOrderBinding? = null
+    private val binding get() = _binding!!
     private lateinit var adapterProduct: AdapterNewOrderPosition
     private lateinit var adapterMilk: AdapterMilk1
     private lateinit var adapterSyrup: AdapterSyrup
     private lateinit var adapterOrder: AdapterOrder
     private val menuViewModel: MenuViewModel by viewModel()
+    private val newOrderViewModel: NewOrderViewModel by viewModel()
+
 
 
 
@@ -43,7 +51,7 @@ class CategoryNewOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCategoryNewOrderBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryNewOrderBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -101,12 +109,65 @@ class CategoryNewOrderFragment : Fragment() {
         }
         bindingOrder.btnAdd.setOnClickListener {
 
-            //для теста
             dialog.dismiss()
-            findNavController().navigate(R.id.action_newOrderChosedTableFragment_to_orderGoodFragment)
+            createOrder(sum)
+
+            //для теста
 
         }
 
+    }
+
+    fun createOrder(sum: Int) {
+        val product = OrderUtils.getCartItems()
+
+        val items = product.map {
+            CreateOrder.Item(
+                item_id = it.id,
+                quantity = it.quantityForCard,
+                is_ready_made_product = it.is_ready_made_product
+            )
+        }
+        val order = CreateOrder(
+            in_an_institution = true,
+            items = items,
+            spent_bonus_points = 0,
+            total_price = sum,
+            table_number = Utils.table
+
+        )
+
+        newOrderViewModel.createOrder(order)
+        observeOrder()
+
+    }
+
+    private fun observeOrder() {
+        newOrderViewModel.order.observe(viewLifecycleOwner) { order ->
+            when (order) {
+                is Resource.Success -> {
+                    Log.d("Order", "Success: ${order.data}")
+                    OrderUtils.clearCartItems()
+                    findNavController().navigate(R.id.action_newOrderChosedTableFragment_to_orderGoodFragment)
+                }
+
+                is Resource.Error -> {
+                    Log.e("Order", "Error: ${order.message}")
+                    order.message?.let {
+                        Toast.makeText(requireContext(),
+                            "Не удалось оформить заказ попробуйте еще раз",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    dataOrderButton()
+                }
+
+                is Resource.Loading -> {
+                }
+                null -> {
+                    // Ничего не делать при значении null
+                }
+            }
+        }
     }
 
     private fun setUpAdapterOrder(
@@ -322,9 +383,16 @@ class CategoryNewOrderFragment : Fragment() {
     }
 }
 
+
+
+
     override fun onResume() {
         super.onResume()
         dataOrderButton()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentNewOrderChosedTableBinding
+import com.example.waiterneocafe.utils.Utils
 import com.example.waiterneocafe.view.menu.SearchFragment
 import com.example.waiterneocafe.view.menu.TabMenuFragment
 import com.example.waiterneocafe.viewModel.MenuViewModel
@@ -38,6 +39,7 @@ class NewOrderChosedTableFragment : Fragment() {
 
     private fun dataTable() {
         val idTable = arguments?.getInt("id") as Int
+        Utils.table =  idTable
         binding.textChoosed.text = getString(R.string.text_choosed, idTable)
     }
 

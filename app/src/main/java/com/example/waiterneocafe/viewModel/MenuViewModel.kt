@@ -63,7 +63,6 @@ class MenuViewModel(private val repository: Repository): ViewModel() {
                         onError("Ошибка при выполнении запроса: ${response.code()}")
                     }
                 }
-
                 override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
                     Log.e("AddProductViewModel", "Ошибка при выполнении запроса", t)
                     onError("")
