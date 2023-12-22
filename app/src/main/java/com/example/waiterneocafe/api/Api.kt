@@ -20,6 +20,7 @@ import com.example.waiterneocafe.model.user.UserUpdate
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -68,6 +69,17 @@ interface Api {
     fun getOrders(): Call<Orders>
     @GET("waiter/get-table-detail/")
     suspend fun getDetailOrder(@Query("table_number") id: Int): Response<DetailOrder>
+
+    @POST("ordering/add-item-to-order/")
+    suspend fun addItemToOrder(@Query("order_id") orderId: Int,
+                               @Query("item_id") itemId: Int,
+                               @Query("is_ready_made_product") ready: Boolean,
+                               @Query("item_id") quantity: Int): Response<MessageResponse>
+
+    @DELETE("ordering/remove-order-item/")
+    suspend fun deleteItemToOrder(@Query("order_item_id") orderId: Int): Response<MessageResponse>
+
+
 
 
 

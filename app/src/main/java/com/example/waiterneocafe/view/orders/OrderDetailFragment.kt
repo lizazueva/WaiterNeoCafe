@@ -26,6 +26,7 @@ class OrderDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val ordersViewModel: OrdersViewModel by viewModel()
     private lateinit var adapterOrderDetail: AdapterTableOrder
+    var detailInfoOrder: DetailOrder? = null
 
 
 
@@ -51,6 +52,30 @@ class OrderDetailFragment : Fragment() {
         binding.imageNotification.setOnClickListener {
             findNavController().navigate(R.id.action_orderDetailFragment_to_notificationsFragment)
         }
+        binding.btnAdd.setOnClickListener {
+            val orderStatus = detailInfoOrder?.order?.status
+            if (orderStatus == "new") {
+                Toast.makeText(requireContext(), "Переход", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Невозможно добавить позиции в данном статусе",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        binding.btnCloseTable.setOnClickListener {
+            val orderStatus = detailInfoOrder?.order?.status
+            if (orderStatus == "ready") {
+                Toast.makeText(requireContext(), "Закрытие", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Невозможно закрыть счет в данном статусе",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun setDataDetailProfile() {
@@ -62,6 +87,7 @@ class OrderDetailFragment : Fragment() {
             when (order) {
                 is Resource.Success -> {
                     order.data?.let { detailInfo ->
+                        detailInfoOrder =detailInfo
                         setDataDetail(detailInfo)
                     }
                 }

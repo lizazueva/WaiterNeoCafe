@@ -1,5 +1,6 @@
 package com.example.waiterneocafe.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,22 +30,23 @@ class AdapterTableOrder: RecyclerView.Adapter<AdapterTableOrder.ViewHolder>() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = differ.currentList[position]
         with(holder.binding){
 
-            textTitle.text = product.item_name
-            val productAmount = product.item_price.toString()
+            textTitle.text = "${product.item_name} (${product.item_price.toInt()} с за шт)"
+            val productAmount = product.item_total_price.toString()
             textAmount.text = "${productAmount.toDouble().toInt()} c"
 
-            if (product.quantity>1) {
+            if (product.quantity>0) {
                 imageAdd.isEnabled = product.quantity <9
                 textCount.visibility = View.VISIBLE
                 textCount.text = product.quantity.toString()
                 imageRemove.visibility = View.VISIBLE
             } else {
                 textCount.visibility = View.INVISIBLE
-                imageRemove.visibility = View.INVISIBLE
+                imageRemove.isEnabled = false
             }
 
             imageRemove.setOnClickListener {
