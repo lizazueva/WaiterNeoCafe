@@ -5,23 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentNewOrderBinding
-import com.example.waiterneocafe.adapters.AdapterNewOrderPosition
-import com.example.waiterneocafe.adapters.AdapterSyrup
 import com.example.waiterneocafe.adapters.AdapterTable
-import com.example.waiterneocafe.model.Syrup
 import com.example.waiterneocafe.model.Table
-import com.example.waiterneocafe.model.menu.Products
-import com.google.android.material.tabs.TabLayout.Tab
+import com.example.waiterneocafe.model.TableResponse
+import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.viewModel.NewOrderViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewOrderFragment : Fragment() {
 
     private lateinit var binding: FragmentNewOrderBinding
     private lateinit var adapterTable: AdapterTable
+    private val newOrderViewModel: NewOrderViewModel by viewModel()
+
 
 
     override fun onCreateView(
@@ -36,10 +37,38 @@ class NewOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpListeners()
-        setUpAdapter()
+        setUpTable()
 
 
     }
+
+    private fun setUpTable() {
+        newOrderViewModel.getTables()
+        newOrderViewModel.table.observe(viewLifecycleOwner){table->
+                when (table) {
+                    is Resource.Success -> {
+                        val tableList = table.data
+                        tableList?.let { table ->
+                            setUpAdapter(tableList)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        table.message?.let {
+                            Toast.makeText(
+                                requireContext(),
+                                "Не удалось загрузить позиции по категориям",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    is Resource.Loading -> {
+                    }
+                }
+            }
+
+}
 
     private fun setUpListeners() {
         binding.imageNotification.setOnClickListener {
@@ -50,14 +79,10 @@ class NewOrderFragment : Fragment() {
         }
     }
 
-    private fun setUpAdapter() {
-        val tables = arrayListOf(
-            Table(true, 1),
-            Table(false, 2),
-            Table(true, 3),
-            Table(false, 4)
+    private fun setUpAdapter(tableList: TableResponse) {
 
-        )
+        val tables = convertTableResponse(tableList)
+
         adapterTable = AdapterTable(requireContext())
         binding.recyclerTable.adapter = adapterTable
         binding.recyclerTable.layoutManager = GridLayoutManager(requireContext(),3)
@@ -65,7 +90,7 @@ class NewOrderFragment : Fragment() {
         adapterTable.onItemClickListener = { table ->
 
             val bundle = Bundle().apply {
-                putInt("id", table.number)
+                putString("id", table.number)
             }
             findNavController().navigate(
                 R.id.action_newOrderFragment_to_newOrderChosedTableFragment,
@@ -73,4 +98,13 @@ class NewOrderFragment : Fragment() {
             )
         }
     }
+
+    fun convertTableResponse(tableResponse: TableResponse): List<Table> {
+        val tableList = mutableListOf<Table>()
+        tableResponse.tables.forEach { (number, status) ->
+            tableList.add(Table(number, status))
+        }
+        return tableList
+    }
+
 }

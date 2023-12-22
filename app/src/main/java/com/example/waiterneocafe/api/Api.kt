@@ -2,6 +2,7 @@ package com.example.waiterneocafe.api
 
 import com.example.waiterneocafe.model.MessageResponse
 import com.example.waiterneocafe.model.Table
+import com.example.waiterneocafe.model.TableResponse
 import com.example.waiterneocafe.model.login.CodeAuth
 import com.example.waiterneocafe.model.login.ConfirmLoginResponse
 import com.example.waiterneocafe.model.login.DetailRequest
@@ -11,6 +12,7 @@ import com.example.waiterneocafe.model.menu.CheckPosition
 import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.model.order.CreateOrder
+import com.example.waiterneocafe.model.order.DetailOrder
 import com.example.waiterneocafe.model.order.Orders
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserInfo
@@ -59,11 +61,13 @@ interface Api {
     fun checkPosition(@Body request: CheckPosition): Call<MessageResponse>
 
     @GET("waiter/get-table-availibility/")
-    suspend fun getTables(): Response<List<Table>>
+    suspend fun getTables(): Response<TableResponse>
     @POST("ordering/create-order/")
     suspend fun createOrder(@Body request: CreateOrder): Response<CreateOrder>
     @GET("waiter/get-orders-in-institution/")
     fun getOrders(): Call<Orders>
+    @GET("waiter/get-table-detail/")
+    suspend fun getDetailOrder(@Query("table_number") id: Int): Response<DetailOrder>
 
 
 

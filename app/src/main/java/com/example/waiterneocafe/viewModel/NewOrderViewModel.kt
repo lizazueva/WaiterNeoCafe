@@ -7,17 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.waiterneocafe.api.Repository
 import com.example.waiterneocafe.model.Table
+import com.example.waiterneocafe.model.TableResponse
 import com.example.waiterneocafe.model.order.CreateOrder
 import com.example.waiterneocafe.utils.Resource
 import kotlinx.coroutines.launch
 
 class NewOrderViewModel(private val repository: Repository): ViewModel() {
     //получение списка столов
-    private val _table: MutableLiveData<Resource<List<Table>>> = MutableLiveData()
-    val table: LiveData<Resource<List<Table>>>
+    private val _table: MutableLiveData<Resource<TableResponse>> = MutableLiveData()
+    val table: LiveData<Resource<TableResponse>>
         get() = _table
 
-    private fun saveTable(response: List<Table>) {
+    private fun saveTable(response: TableResponse) {
         _table.postValue(Resource.Success(response))
     }
 

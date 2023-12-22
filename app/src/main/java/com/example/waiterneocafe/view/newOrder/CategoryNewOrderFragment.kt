@@ -133,7 +133,7 @@ class CategoryNewOrderFragment : Fragment() {
             items = items,
             spent_bonus_points = 0,
             total_price = sum,
-            table_number = Utils.table
+            table_number = Utils.table.toDouble().toInt()
 
         )
 

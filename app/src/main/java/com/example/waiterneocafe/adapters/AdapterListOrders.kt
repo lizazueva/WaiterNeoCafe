@@ -11,6 +11,8 @@ import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.ItemStatusOrderBinding
 
 import com.example.waiterneocafe.model.order.Orders
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AdapterListOrders: RecyclerView.Adapter<AdapterListOrders.ViewHolder>(){
 
@@ -50,6 +52,8 @@ class AdapterListOrders: RecyclerView.Adapter<AdapterListOrders.ViewHolder>(){
                     textStatusOrder.text = "Завершено"
                 }
             }
+            val formattedTime = convertIso8601ToTime(order.order_created_at)
+            textTime.text = formattedTime
 
             root.setOnClickListener {
                 onItemClickListener?.invoke(order)
@@ -71,5 +75,18 @@ class AdapterListOrders: RecyclerView.Adapter<AdapterListOrders.ViewHolder>(){
     }
 
     val differ = AsyncListDiffer(this,differCallBack)
+
+    fun convertIso8601ToTime(iso8601String: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+        return try {
+            val date = inputFormat.parse(iso8601String)
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
 
 }

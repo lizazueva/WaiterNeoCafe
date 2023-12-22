@@ -38,7 +38,7 @@ class NewOrderChosedTableFragment : Fragment() {
     }
 
     private fun dataTable() {
-        val idTable = arguments?.getInt("id") as Int
+        val idTable = arguments?.getString("id") as String
         Utils.table =  idTable
         binding.textChoosed.text = getString(R.string.text_choosed, idTable)
     }

@@ -1,6 +1,6 @@
 package com.example.waiterneocafe.model
 
 data class Table(
-    val free: Boolean,
-    val number: Int
+    val number: String,
+    val free: String
 )

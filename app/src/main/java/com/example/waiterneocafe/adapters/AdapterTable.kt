@@ -30,11 +30,12 @@ class AdapterTable(private val context: Context): RecyclerView.Adapter<AdapterTa
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val table = differ.currentList[position]
         with(holder.binding){
-            number.text = table.number.toString()
-            if (table.free){
+            number.text = table.number
+            if (table.free == "free"){
                 cardForTable.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green));
             }else{
-                cardForTable.setCardBackgroundColor(ContextCompat.getColor(context, R.color.grey_table));
+                cardForTable.setCardBackgroundColor(ContextCompat.getColor(context, R.color.grey_table))
+                cardForTable.isEnabled = false
             }
             cardForTable.setOnClickListener {
                 onItemClickListener?.invoke(table)

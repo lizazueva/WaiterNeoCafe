@@ -60,7 +60,9 @@ class RetrofitInstance {
                     path.endsWith("customers/check-if-item-can-be-made/")||
                     path.endsWith("accounts/update-waiter-profile/")||
                     path.endsWith("ordering/create-order/")||
-                    path.endsWith("waiter/get-orders-in-institution/")
+                    path.endsWith("waiter/get-orders-in-institution/")||
+                    path.contains("waiter/get-table-detail/") && request.method == "GET"||
+                    path.endsWith("waiter/get-table-availibility/")
 
         }
     }
