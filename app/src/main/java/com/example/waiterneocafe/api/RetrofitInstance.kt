@@ -64,7 +64,9 @@ class RetrofitInstance {
                     path.contains("waiter/get-table-detail/") && request.method == "GET"||
                     path.endsWith("waiter/get-table-availibility/")||
                     path.contains("ordering/add-item-to-order/") && request.method == "POST"||
-                    path.contains("ordering/remove-order-item/") && request.method == "DELETE"
+                    path.contains("ordering/remove-order-item/") && request.method == "DELETE"||
+                    path.endsWith("customers/my-id/")||
+                    path.contains("notices/delete-client-notification") && request.method == "GET"
 
         }
     }

@@ -27,14 +27,6 @@ class OrdersViewModel(private val repository: Repository): ViewModel() {
         _detailOrder.postValue(Resource.Success(response))
     }
 
-    //добавление позиции в заказ
-    private val _addOrder: MutableLiveData<Resource<MessageResponse>?> = MutableLiveData()
-    val addOrder: MutableLiveData<Resource<MessageResponse>?>
-        get() = _addOrder
-    private fun saveAddOrder(response: MessageResponse) {
-        _addOrder.postValue(Resource.Success(response))
-    }
-
     //удаление позиции в заказ
     private val _resultDelete: MutableLiveData<Resource<MessageResponse>?> = MutableLiveData()
     val resultDelete: MutableLiveData<Resource<MessageResponse>?>
@@ -88,50 +80,58 @@ class OrdersViewModel(private val repository: Repository): ViewModel() {
         })
     }
 
-    fun addItemToOrder (orderId: Int,
-                        itemId: Int,
-                        ready: Boolean,
-                        quantity: Int){
-        viewModelScope.launch {
-            try {
-                val response = repository.addItemToOrder(orderId, itemId, ready, quantity)
-                if (response.isSuccessful) {
-                    _addOrder.postValue(Resource.Loading())
-                    val orderResponse = response.body()
-                    orderResponse?.let { saveAddOrder(it) }
-                    Log.d("addItemToOrder", "Successful: $orderResponse")
-                }else{
-                    _addOrder.postValue(Resource.Error("Ошибка добавления позиции"))
-                    Log.e("MyViewModel", "createOrder Error: ${response.errorBody()?.toString()}")
-                }
-            } catch (e: Exception) {
-                Log.e("MyViewModel", "Ошибка добавления позиции: ${e.message}")
 
-                _addOrder.postValue(Resource.Error(e.message ?: "Ошибка добавления позиции"))
-            }
-        }
+    fun addItemOrder(
+        orderId: Int,
+        itemId: Int,
+        ready: Boolean,
+        quantity: Int,
+        onSuccess: () -> Unit,
+        onError: (String?) -> Unit
+    ) {
+        repository.addItemToOrder(orderId, itemId, ready, quantity)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Ошибка при выполнении запроса: ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.e("addItemOrder", "Ошибка при выполнении запроса", t)
+                    onError("")
+                }
+            })
     }
 
-    fun deleteItemToOrder(orderId: Int){
-        viewModelScope.launch {
-            try {
-                val response = repository.deleteItemToOrder(orderId)
-                if (response.isSuccessful) {
-                    _resultDelete.postValue(Resource.Loading())
-                    val deleteResponse = response.body()
-                    deleteResponse?.let { saveResultDelete(it) }
-                    Log.d("deleteItemToOrder", "Successful: $deleteResponse")
-                }else{
-                    _resultDelete.postValue(Resource.Error("Ошибка добавления позиции"))
-                    Log.e("MyViewModel", "Error: ${response.errorBody()?.toString()}")
+    fun deleteItemToOrder(
+        orderId: Int,
+        onSuccess: () -> Unit,
+        onError: (String?) -> Unit
+    ) {
+        repository.deleteItemToOrder(orderId)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Ошибка при выполнении запроса: ${response.code()}")
+                    }
                 }
-            } catch (e: Exception) {
-                Log.e("MyViewModel", "Ошибка добавления позиции: ${e.message}")
-                _resultDelete.postValue(Resource.Error(e.message ?: "Ошибка добавления позиции"))
-            }
-        }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.e("addItemOrder", "Ошибка при выполнении запроса", t)
+                    onError("")
+                }
+            })
     }
-
-
 }
 

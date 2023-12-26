@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clientneowaiter.databinding.ItemNotificationBinding
 import com.example.waiterneocafe.model.notifications.Notifications
+import com.example.waiterneocafe.model.notifications.NotificationsResponse
 
 class AdapterNotifications: RecyclerView.Adapter<AdapterNotifications.ViewHolder>() {
 
@@ -25,8 +26,8 @@ class AdapterNotifications: RecyclerView.Adapter<AdapterNotifications.ViewHolder
         var notifications = differ.currentList[position]
         with(holder.binding){
             textTitleNotification.text = notifications.title
-            textDiscrNotification.text= notifications.discr
-            textTimeNotification.text = notifications.time
+            textDiscrNotification.text= notifications.body
+            textTimeNotification.text = notifications.exactly_time
 
         }
     }
@@ -34,12 +35,12 @@ class AdapterNotifications: RecyclerView.Adapter<AdapterNotifications.ViewHolder
     inner class ViewHolder ( var binding: ItemNotificationBinding): RecyclerView.ViewHolder(binding.root)  {
     }
 
-    private val differCallBack = object: DiffUtil.ItemCallback<Notifications>(){
-        override fun areItemsTheSame(oldItem: Notifications, newItem: Notifications): Boolean {
+    private val differCallBack = object: DiffUtil.ItemCallback<NotificationsResponse.Notifications>(){
+        override fun areItemsTheSame(oldItem: NotificationsResponse.Notifications, newItem: NotificationsResponse.Notifications): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Notifications, newItem: Notifications): Boolean {
+        override fun areContentsTheSame(oldItem: NotificationsResponse.Notifications, newItem: NotificationsResponse.Notifications): Boolean {
             return oldItem == newItem
         }
     }
@@ -49,11 +50,6 @@ class AdapterNotifications: RecyclerView.Adapter<AdapterNotifications.ViewHolder
     fun removeItem(position: Int) {
         val newList = ArrayList(differ.currentList)
         newList.removeAt(position)
-        differ.submitList(newList)
-    }
-
-    fun deleteAllItems() {
-        val newList = emptyList<Notifications>()
         differ.submitList(newList)
     }
 }

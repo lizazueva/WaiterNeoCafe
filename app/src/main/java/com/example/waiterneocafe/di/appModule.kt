@@ -6,6 +6,7 @@ import com.example.waiterneocafe.viewModel.CodeViewModel
 import com.example.waiterneocafe.viewModel.LoginViewModel
 import com.example.waiterneocafe.viewModel.MenuViewModel
 import com.example.waiterneocafe.viewModel.NewOrderViewModel
+import com.example.waiterneocafe.viewModel.NotificationsViewModel
 import com.example.waiterneocafe.viewModel.OrdersViewModel
 import com.example.waiterneocafe.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,12 +18,13 @@ val appModule = module {
 }
 
 val viewModules = module {
-    viewModel { LoginViewModel (get()) }
+    viewModel { LoginViewModel (get())}
     viewModel { CodeViewModel (get())}
     viewModel { MenuViewModel (get())}
     viewModel { UserViewModel (get())}
     viewModel { NewOrderViewModel (get())}
     viewModel { OrdersViewModel (get())}
+    viewModel { NotificationsViewModel(get())}
 
 
 

@@ -2,6 +2,7 @@ package com.example.waiterneocafe.view.notifications
 
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +18,24 @@ import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentNotificationsBinding
 import com.example.waiterneocafe.adapters.AdapterNotifications
 import com.example.waiterneocafe.model.notifications.Notifications
+import com.example.waiterneocafe.model.notifications.NotificationsResponse
+import com.example.waiterneocafe.model.user.ClientId
+import com.example.waiterneocafe.utils.NotificationsWebSocket
+import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.viewModel.NotificationsViewModel
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationsFragment : Fragment() {
 
     private lateinit var binding: FragmentNotificationsBinding
     private lateinit var adapterNotifications: AdapterNotifications
-    lateinit var testNot: ArrayList<Notifications>
+    private lateinit var webSocket: NotificationsWebSocket
+    private val notificationsViewModel: NotificationsViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,19 +47,86 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpAdapter()
+        getIdClient()
         setUpSwipeCallback()
         setUpListeners()
 
+    }
+
+    private fun getIdClient() {
+        notificationsViewModel.getIdClient()
+        notificationsViewModel.idClient.observe(viewLifecycleOwner){id->
+            when(id){
+                is Resource.Success -> {
+                    id.data?.let{id ->
+                        setWebSocket(id)}
+                }
+
+                is Resource.Error -> {
+                    id.message?.let {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось получить данные",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+
+    private fun setWebSocket(id: ClientId) {
+        webSocket = NotificationsWebSocket(object : NotificationsWebSocket.NotificationsWebSocketListener {
+            override fun onMessage(message: String) {
+
+                activity?.runOnUiThread {
+                    try {
+
+//                            val newNotifications = Gson().fromJson(message, object : TypeToken<List<Notifications>>() {}.type)
+                        val newNotifications = parseWebSocketMessage(message)
+                        setUpAdapter(newNotifications)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onClose() {
+                // Handle WebSocket close event
+            }
+
+            override fun onFailure(error: String) {
+                // Handle WebSocket failure
+            }
+        }, id.id)
+
+        webSocket.startWebSocket()
+
+    }
+
+    private fun parseWebSocketMessage(message: String): List<NotificationsResponse.Notifications> {
+        try {
+            val responseType = object : TypeToken<NotificationsResponse>() {}.type
+            val response = Gson().fromJson<NotificationsResponse>(message, responseType)
+            return response.notifications ?: emptyList()
+        } catch (e: JsonSyntaxException) {
+            e.printStackTrace()
+            // Логирование содержания сообщения для дальнейшего анализа
+            Log.e("NotificationsFragment", "Invalid JSON message: $message")
+            return emptyList()
+        }
     }
     private fun setUpListeners() {
         binding.imageBack.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.textClearAll.setOnClickListener {
-            adapterNotifications.deleteAllItems()
-            binding.textNoNotifications.isVisible = true
-            binding.textClearAll.isVisible = false
+//            adapterNotifications.deleteAllItems()
+//            binding.textNoNotifications.isVisible = true
+//            binding.textClearAll.isVisible = false
 
         }
 
@@ -74,8 +153,8 @@ class NotificationsFragment : Fragment() {
 
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        Toast.makeText(requireContext(), "Уведомление удалено", Toast.LENGTH_LONG).show()
-                        adapterNotifications.removeItem(position)
+                        val notificationId = adapterNotifications.differ.currentList[position].id
+                        deleteNotification(notificationId, position)
                     }
                 }
             }
@@ -83,19 +162,44 @@ class NotificationsFragment : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerNotifications)
+    }
+
+    private fun deleteNotification(notificationId: Int, position: Int) {
+        notificationsViewModel.deleteNotification(notificationId)
+        notificationsViewModel.resultDelete.observe(viewLifecycleOwner) {resultDelete ->
+            when (resultDelete) {
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Уведомление удалено", Toast.LENGTH_LONG).show()
+                    adapterNotifications.removeItem(position)
+                }
+
+                is Resource.Error -> {
+                    resultDelete.message?.let {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось удалить уведомление",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
 
     }
 
-    private fun setUpAdapter() {
+    private fun setUpAdapter(newNotifications: List<NotificationsResponse.Notifications>) {
         adapterNotifications = AdapterNotifications()
         binding.recyclerNotifications.adapter = adapterNotifications
         binding.recyclerNotifications.layoutManager = LinearLayoutManager(requireContext())
-        testNot = arrayListOf (
-            Notifications(1,"Заказ готов", "13:15","Кофейный напиток, 2 бургера, 3 тирамису, 2 тарталетки"),
-            Notifications(2,"Вы закрыли счет", "13:16", "Кофейный напиток"),
-            Notifications(3,"Ваш заказ оформлен", "13:15", "Кофейный напиток"),
-            Notifications(4,"Заказ готов", "17:15", "Кофейный напиток")
-        )
-        adapterNotifications.differ.submitList(testNot)
+
+        adapterNotifications.differ.submitList(newNotifications)
+
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        webSocket.closeWebSocket()
     }
 }

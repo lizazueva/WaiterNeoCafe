@@ -127,5 +127,20 @@
         <action
             android:id="@+id/action_orderDetailFragment_to_notificationsFragment"
             app:destination="@id/notificationsFragment" />
+        <action
+            android:id="@+id/action_orderDetailFragment_to_tabForAddItemsFragment"
+            app:destination="@id/tabForAddItemsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tabForAddItemsFragment"
+        android:name="com.example.waiterneocafe.view.orders.TabForAddItemsFragment"
+        android:label="fragment_tab_for_add_items"
+        tools:layout="@layout/fragment_tab_for_add_items" >
+        <action
+            android:id="@+id/action_tabForAddItemsFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+        <argument
+            android:name="order_id"
+            app:argType="integer" />
     </fragment>
 </navigation>

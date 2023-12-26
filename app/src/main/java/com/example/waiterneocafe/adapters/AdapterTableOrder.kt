@@ -90,4 +90,5 @@ class AdapterTableOrder: RecyclerView.Adapter<AdapterTableOrder.ViewHolder>() {
             }
         }
     }
+
 }

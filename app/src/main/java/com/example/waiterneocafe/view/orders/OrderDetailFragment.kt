@@ -1,5 +1,6 @@
 package com.example.waiterneocafe.view.orders
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,13 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentOrderDetailBinding
-import com.example.waiterneocafe.adapters.AdapterOrder
 import com.example.waiterneocafe.adapters.AdapterTableOrder
-import com.example.waiterneocafe.model.menu.CheckPosition
-import com.example.waiterneocafe.model.menu.Products
 import com.example.waiterneocafe.model.order.DetailOrder
-import com.example.waiterneocafe.utils.OrderUtils
 import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.utils.Utils
 import com.example.waiterneocafe.viewModel.OrdersViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +45,7 @@ class OrderDetailFragment : Fragment() {
 
     private fun setUpListeners() {
         binding.imageBack.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.action_orderDetailFragment_to_ordersFragment)
         }
         binding.imageNotification.setOnClickListener {
             findNavController().navigate(R.id.action_orderDetailFragment_to_notificationsFragment)
@@ -55,7 +53,13 @@ class OrderDetailFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val orderStatus = detailInfoOrder?.order?.status
             if (orderStatus == "new") {
-                Toast.makeText(requireContext(), "Переход", Toast.LENGTH_SHORT).show()
+                val action = detailInfoOrder?.order?.let { it1 ->
+                    OrderDetailFragmentDirections.actionOrderDetailFragmentToTabForAddItemsFragment(
+                        it1.id)
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -80,8 +84,17 @@ class OrderDetailFragment : Fragment() {
 
     private fun setDataDetailProfile() {
         val orderId = arguments?.getInt("id")
-        if (orderId != null) {
-            ordersViewModel.orderDetail(orderId)
+        if (orderId != 0) {
+            if (orderId != null) {
+                Utils.orderId = orderId
+            }
+        }
+        if (orderId != 0) {
+            if (orderId != null) {
+                ordersViewModel.orderDetail(orderId)
+            }
+        }else{
+            ordersViewModel.orderDetail(Utils.orderId)
         }
         ordersViewModel.detailProduct.observe(viewLifecycleOwner){order->
             when (order) {
@@ -114,7 +127,7 @@ class OrderDetailFragment : Fragment() {
             "new" -> binding.imageStatus.setImageResource(R.drawable.img_ellipse_red).also {
                 binding.textStatusOrder.text = "Новый"
             }
-            "in progress" -> binding.imageStatus.setImageResource(R.drawable.img_ellipse_yellow).also {
+            "in_progress" -> binding.imageStatus.setImageResource(R.drawable.img_ellipse_yellow).also {
                 binding.textStatusOrder.text = "В процессе"
             }
             "ready" -> binding.imageStatus.setImageResource(R.drawable.img_ellipse_green).also {
@@ -148,14 +161,87 @@ class OrderDetailFragment : Fragment() {
 
             override fun onAddClick(data: DetailOrder.Order.Item, position: Int) {
 
+                val orderStatus = detailInfoOrder?.order?.status
+                if (orderStatus == "new") {
+                        observeAddItem(data, detailInfoOrder?.order?.id)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Невозможно добавить позиции в данном статусе",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
 
             override fun onRemoveClick(data: DetailOrder.Order.Item, position: Int) {
+                val orderStatus = detailInfoOrder?.order?.status
+                if (orderStatus == "new") {
+                    observeDeleteItem(data.id)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Невозможно удалить позицию в данном статусе",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         })
 
     }
+
+    private fun observeDeleteItem(id: Int) {
+        ordersViewModel.deleteItemToOrder(id,
+            onSuccess = {
+                Toast.makeText(
+                    requireContext(),
+                    "Позиция успешно удалена",
+                    Toast.LENGTH_SHORT
+                ).show()
+                setDataDetailProfile()
+
+
+
+            },
+            onError = {
+                Toast.makeText(
+                    requireContext(),
+                    "Ошибка при удалении товара",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeAddItem(data: DetailOrder.Order.Item, id: Int?) {
+        if (id != null) {
+            ordersViewModel.addItemOrder(id, data.item_id, data.is_ready_made_product, 1,
+                onSuccess = {
+                    Toast.makeText(
+                        requireContext(),
+                        "Позиция успешно добавлена",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    adapterOrderDetail.notifyDataSetChanged()
+                    setDataDetailProfile()
+
+
+
+                },
+                onError = {
+                    Toast.makeText(
+                        requireContext(),
+                        "Товара больше нет",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

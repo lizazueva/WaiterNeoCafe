@@ -28,7 +28,7 @@ class AdapterStatusOrders(
         return when (tabPosition) {
             0 -> orders
             1 -> orders.filter { it.order_status == "new" }
-            2 -> orders.filter { it.order_status == "in progress" }
+            2 -> orders.filter { it.order_status == "in_progress" }
             3 -> orders.filter { it.order_status == "ready" }
             4 -> orders.filter { it.order_status == "canceled" }
             5 -> orders.filter { it.order_status == "completed" }

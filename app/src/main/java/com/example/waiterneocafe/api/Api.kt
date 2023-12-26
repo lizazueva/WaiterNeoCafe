@@ -14,6 +14,7 @@ import com.example.waiterneocafe.model.menu.SearchResultResponse
 import com.example.waiterneocafe.model.order.CreateOrder
 import com.example.waiterneocafe.model.order.DetailOrder
 import com.example.waiterneocafe.model.order.Orders
+import com.example.waiterneocafe.model.user.ClientId
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserInfo
 import com.example.waiterneocafe.model.user.UserUpdate
@@ -71,13 +72,17 @@ interface Api {
     suspend fun getDetailOrder(@Query("table_number") id: Int): Response<DetailOrder>
 
     @POST("ordering/add-item-to-order/")
-    suspend fun addItemToOrder(@Query("order_id") orderId: Int,
+    fun addItemToOrder(@Query("order_id") orderId: Int,
                                @Query("item_id") itemId: Int,
                                @Query("is_ready_made_product") ready: Boolean,
-                               @Query("item_id") quantity: Int): Response<MessageResponse>
+                               @Query("quantity") quantity: Int): Call<MessageResponse>
 
     @DELETE("ordering/remove-order-item/")
-    suspend fun deleteItemToOrder(@Query("order_item_id") orderId: Int): Response<MessageResponse>
+    fun deleteItemToOrder(@Query("order_item_id") orderId: Int): Call<MessageResponse>
+    @GET("customers/my-id/")
+    suspend fun getIdClient(): Response<ClientId>
+    @GET("notices/delete-client-notification")
+    suspend fun deleteNotification(@Query("id") id: Int): Response<Unit>
 
 
 
