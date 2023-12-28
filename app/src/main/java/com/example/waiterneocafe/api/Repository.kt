@@ -11,6 +11,7 @@ import com.example.waiterneocafe.model.order.CreateOrder
 import com.example.waiterneocafe.model.order.Orders
 import com.example.waiterneocafe.model.user.Shedule
 import com.example.waiterneocafe.model.user.UserUpdate
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Query
@@ -39,6 +40,10 @@ class Repository(private val api: Api) {
     fun deleteItemToOrder(orderId: Int) = RetrofitInstance.api.deleteItemToOrder(orderId)
     suspend fun getIdClient() = RetrofitInstance.api.getIdClient()
     suspend fun deleteNotification(id: Int) = RetrofitInstance.api.deleteNotification(id)
+    suspend fun deleteAllNotification(id: Int) = RetrofitInstance.api.deleteAllNotification(id)
+    suspend fun completeOrder(orderId: Int) = RetrofitInstance.api.completeOrder(orderId)
+
+
 
 
 

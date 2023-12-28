@@ -83,6 +83,11 @@ interface Api {
     suspend fun getIdClient(): Response<ClientId>
     @GET("notices/delete-client-notification")
     suspend fun deleteNotification(@Query("id") id: Int): Response<Unit>
+    @GET("notices/clear-waiter-notifications/")
+    suspend fun deleteAllNotification(@Query("waiter_id") id: Int): Response<Unit>
+    @GET("web/complete-order/")
+    suspend fun completeOrder(@Query("order_id") orderId: Int): Response<MessageResponse>
+
 
 
 

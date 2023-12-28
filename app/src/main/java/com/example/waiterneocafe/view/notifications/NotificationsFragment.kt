@@ -35,6 +35,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var adapterNotifications: AdapterNotifications
     private lateinit var webSocket: NotificationsWebSocket
     private val notificationsViewModel: NotificationsViewModel by viewModel()
+    private var idClient = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +60,9 @@ class NotificationsFragment : Fragment() {
             when(id){
                 is Resource.Success -> {
                     id.data?.let{id ->
-                        setWebSocket(id)}
+                        setWebSocket(id)
+                        idClient = id.id
+                    }
                 }
 
                 is Resource.Error -> {
@@ -124,10 +127,35 @@ class NotificationsFragment : Fragment() {
             findNavController().navigateUp()
         }
         binding.textClearAll.setOnClickListener {
-//            adapterNotifications.deleteAllItems()
-//            binding.textNoNotifications.isVisible = true
-//            binding.textClearAll.isVisible = false
+            deleteAllNotifications()
+        }
 
+    }
+
+    private fun deleteAllNotifications() {
+        notificationsViewModel.deleteAllNotification(idClient)
+        notificationsViewModel.resultAllDelete.observe(viewLifecycleOwner) {resultDelete ->
+            when (resultDelete) {
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Уведомления удалены", Toast.LENGTH_LONG).show()
+                    binding.textNoNotifications.isVisible = true
+                    binding.textClearAll.isVisible = false
+                    adapterNotifications.deleteAll()
+                }
+
+                is Resource.Error -> {
+                    resultDelete.message?.let {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось удалить уведомления",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                }
+            }
         }
 
     }

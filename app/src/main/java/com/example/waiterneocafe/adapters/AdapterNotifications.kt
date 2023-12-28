@@ -52,4 +52,7 @@ class AdapterNotifications: RecyclerView.Adapter<AdapterNotifications.ViewHolder
         newList.removeAt(position)
         differ.submitList(newList)
     }
+    fun deleteAll() {
+        differ.submitList(emptyList())
+    }
 }

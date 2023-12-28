@@ -118,8 +118,8 @@ class CodeFragment : Fragment() {
     }
 
     private fun setUpTextPhone() {
-        val phone = "444 555 444"
-        binding.textErrorCode.text = getString(R.string.text_code, phone)
+//        val phone = "444 555 444"
+        binding.textErrorCode.text = "Введите 4-х значный код,\n отправленный на ваш номер"
     }
 
 }

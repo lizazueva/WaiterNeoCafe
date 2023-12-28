@@ -35,6 +35,15 @@ class OrdersViewModel(private val repository: Repository): ViewModel() {
         _resultDelete.postValue(Resource.Success(response))
     }
 
+    //закрытие счета
+    private val _completeOrder: MutableLiveData<Resource<MessageResponse>> = MutableLiveData()
+    val completeOrder: MutableLiveData<Resource<MessageResponse>>
+        get() = _completeOrder
+    private fun saveCompleteOrder(response: MessageResponse) {
+        _completeOrder.postValue(Resource.Success(response))
+    }
+
+
     fun orderDetail(id: Int) {
         viewModelScope.launch {
             _detailOrder.postValue(Resource.Loading())
@@ -132,6 +141,26 @@ class OrdersViewModel(private val repository: Repository): ViewModel() {
                     onError("")
                 }
             })
+    }
+
+    fun completeOrder(orderId: Int){
+        viewModelScope.launch {
+            _completeOrder.postValue(Resource.Loading())
+            try {
+                val response = repository.completeOrder(orderId)
+                if (response.isSuccessful) {
+                    val productResponse = response.body()
+                    productResponse?.let { saveCompleteOrder(it) }
+                    Log.d("completeOrder", "Successful: $productResponse")
+                }else{
+                    val errorBody = response.errorBody()?.toString()
+                    _completeOrder.postValue(Resource.Error(errorBody ?:"Ошибка закрытия счета"))
+                }
+            } catch (e: Exception) {
+                Log.e("MyViewModel", "Ошибка загрузки: ${e.message}")
+                _completeOrder.postValue(Resource.Error(e.message ?: "Ошибка загрузки"))
+            }
+        }
     }
 }
 

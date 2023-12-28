@@ -2,6 +2,7 @@ package com.example.waiterneocafe.view.orders
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,15 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clientneowaiter.R
+import com.example.clientneowaiter.databinding.BottomSheetCloseTableBinding
 import com.example.clientneowaiter.databinding.FragmentOrderDetailBinding
+import com.example.waiterneocafe.adapters.AdapterCloseTable
 import com.example.waiterneocafe.adapters.AdapterTableOrder
 import com.example.waiterneocafe.model.order.DetailOrder
 import com.example.waiterneocafe.utils.Resource
 import com.example.waiterneocafe.utils.Utils
 import com.example.waiterneocafe.viewModel.OrdersViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OrderDetailFragment : Fragment() {
@@ -24,6 +28,8 @@ class OrderDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val ordersViewModel: OrdersViewModel by viewModel()
     private lateinit var adapterOrderDetail: AdapterTableOrder
+    private lateinit var adapterCloseTable: AdapterCloseTable
+
     var detailInfoOrder: DetailOrder? = null
 
 
@@ -70,8 +76,9 @@ class OrderDetailFragment : Fragment() {
         }
         binding.btnCloseTable.setOnClickListener {
             val orderStatus = detailInfoOrder?.order?.status
+            //ready
             if (orderStatus == "ready") {
-                Toast.makeText(requireContext(), "Закрытие", Toast.LENGTH_SHORT).show()
+                detailInfoOrder?.order?.let { it1 -> dialogCloseTable(it1) }
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -80,6 +87,63 @@ class OrderDetailFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun dialogCloseTable(items: DetailOrder.Order) {
+        val bindingOrder: BottomSheetCloseTableBinding =
+            BottomSheetCloseTableBinding.inflate(LayoutInflater.from(context))
+        val dialog = context?.let { BottomSheetDialog(it) }
+        dialog?.setContentView(bindingOrder.root)
+            bindingOrder.textResultSum.text = getString(R.string.text_result_sum, items.total_price.toDouble().toInt())
+            setUpAdapterCloseTable(bindingOrder, items.items)
+        dialog?.show()
+
+            bindingOrder.btnClose.setOnClickListener {
+
+                dialog?.dismiss()
+
+                closeTable(items.id, dialog)
+
+            }
+
+        }
+
+    private fun closeTable(id: Int, dialog: BottomSheetDialog?) {
+        ordersViewModel.completeOrder(id)
+        ordersViewModel.completeOrder.observe(viewLifecycleOwner) { order ->
+            when (order) {
+                is Resource.Success -> {
+                    Log.d("Order", "Success: ${order.data}")
+                    dialog?.dismiss()
+                    Toast.makeText(requireContext(),
+                        "Счет успешно закрыт",
+                        Toast.LENGTH_SHORT).show()
+                }
+
+                is Resource.Error -> {
+                    Log.e("Order", "Error: ${order.message}")
+                    order.message?.let {
+                        Toast.makeText(requireContext(),
+                            "Не удалось закрыть счет",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+
+    private fun setUpAdapterCloseTable(
+        bindingOrder: BottomSheetCloseTableBinding,
+        items: List<DetailOrder.Order.Item>
+    ) {
+        adapterCloseTable = AdapterCloseTable()
+        bindingOrder.recyclerCloseTable.adapter = adapterCloseTable
+        bindingOrder.recyclerCloseTable.layoutManager = LinearLayoutManager(requireContext())
+        adapterCloseTable.differ.submitList(items)
+
     }
 
     private fun setDataDetailProfile() {
@@ -200,9 +264,6 @@ class OrderDetailFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 setDataDetailProfile()
-
-
-
             },
             onError = {
                 Toast.makeText(
@@ -240,6 +301,11 @@ class OrderDetailFragment : Fragment() {
                 }
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setDataDetailProfile()
     }
 
     override fun onDestroy() {

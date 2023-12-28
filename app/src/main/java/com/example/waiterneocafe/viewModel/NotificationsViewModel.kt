@@ -30,6 +30,15 @@ class NotificationsViewModel(private val repository: Repository): ViewModel()  {
         _resultDelete.postValue(Resource.Success(response))
     }
 
+    //удаление всех уведомления
+    private val _resultAllDelete: MutableLiveData<Resource<Boolean>> = MutableLiveData()
+    val resultAllDelete: LiveData<Resource<Boolean>>
+        get() = _resultAllDelete
+
+    private fun saveResultAllDelete(response: Boolean) {
+        _resultAllDelete.postValue(Resource.Success(response))
+    }
+
     fun getIdClient(){
         viewModelScope.launch {
             _idClient.postValue(Resource.Loading())
@@ -61,11 +70,31 @@ class NotificationsViewModel(private val repository: Repository): ViewModel()  {
                     Log.d("getOrderDetail", "Successful: $productResponse")
                 }else{
                     val errorBody = response.errorBody()?.toString()
-                    _resultDelete.postValue(Resource.Error(errorBody ?:"Ошибка удаления заказа"))
+                    _resultDelete.postValue(Resource.Error(errorBody ?:"Ошибка удаления уведомлений"))
                 }
             } catch (e: Exception) {
                 Log.e("MyViewModel", "Ошибка загрузки: ${e.message}")
                 _resultDelete.postValue(Resource.Error(e.message ?: "Ошибка загрузки"))
+            }
+        }
+    }
+
+    fun deleteAllNotification(id: Int){
+        viewModelScope.launch {
+            _resultAllDelete.postValue(Resource.Loading())
+            try {
+                val response = repository.deleteAllNotification(id)
+                if (response.isSuccessful) {
+                    val productResponse = response.body()
+                    saveResultAllDelete(true)
+                    Log.d("deleteAllNotification", "Successful: $productResponse")
+                }else{
+                    val errorBody = response.errorBody()?.toString()
+                    _resultAllDelete.postValue(Resource.Error(errorBody ?:"Ошибка удаления уведомлений"))
+                }
+            } catch (e: Exception) {
+                Log.e("MyViewModel", "Ошибка загрузки: ${e.message}")
+                _resultAllDelete.postValue(Resource.Error(e.message ?: "Ошибка загрузки"))
             }
         }
     }

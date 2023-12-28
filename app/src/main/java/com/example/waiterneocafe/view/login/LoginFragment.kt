@@ -58,7 +58,6 @@ class LoginFragment : Fragment() {
 //            для теста
 //            findNavController().navigate(R.id.action_loginFragment_to_codeFragment)
 
-            binding.btnLogin.setOnClickListener {
 
                 //для теста
                 val password = binding.textInputName.text.toString()
@@ -88,7 +87,6 @@ class LoginFragment : Fragment() {
 
 
 //            data()
-            }
         }
     }
 

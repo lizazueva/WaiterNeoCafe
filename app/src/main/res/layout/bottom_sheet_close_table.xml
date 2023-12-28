@@ -72,7 +72,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_milk"
+        android:id="@+id/recycler_close_table"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -95,18 +95,18 @@
         android:text="@string/text_result_sum"
         android:textSize="21dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_add"
+        app:layout_constraintBottom_toTopOf="@id/btn_close"
         />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_add"
+        android:id="@+id/btn_close"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_active"
-        android:text="@string/btn_add"
+        android:text="Закрыть счет"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"

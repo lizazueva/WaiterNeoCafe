@@ -114,4 +114,9 @@ class TabOrdersFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        observeStatusList()
+    }
+
 }
