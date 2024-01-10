@@ -1,9 +1,6 @@
 package com.example.waiterneocafe.model.order
 
 data class DetailOrder(
-    val order: Order
-) {
-    data class Order(
         val branch_name: String,
         val created_at: String,
         val exact_time: String,
@@ -28,4 +25,3 @@ data class DetailOrder(
             var quantity: Int
         )
     }
-}

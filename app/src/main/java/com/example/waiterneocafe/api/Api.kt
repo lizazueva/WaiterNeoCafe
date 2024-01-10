@@ -68,6 +68,10 @@ interface Api {
     suspend fun createOrder(@Body request: CreateOrder): Response<CreateOrder>
     @GET("waiter/get-orders-in-institution/")
     fun getOrders(): Call<Orders>
+
+    @GET("customers/my-orders/{id}/")
+    suspend fun getDetailOrder1(@Path("id") id: Int): Response<DetailOrder>
+
     @GET("waiter/get-table-detail/")
     suspend fun getDetailOrder(@Query("table_number") id: Int): Response<DetailOrder>
 

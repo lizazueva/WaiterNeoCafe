@@ -36,12 +36,12 @@ class AdapterCloseTable: RecyclerView.Adapter<AdapterCloseTable.ViewHolder>() {
     inner class ViewHolder ( var binding: ItemCloseTableBinding): RecyclerView.ViewHolder(binding.root)  {
     }
 
-    private val differCallBack = object: DiffUtil.ItemCallback<DetailOrder.Order.Item>(){
-        override fun areItemsTheSame(oldItem: DetailOrder.Order.Item, newItem: DetailOrder.Order.Item): Boolean {
+    private val differCallBack = object: DiffUtil.ItemCallback<DetailOrder.Item>(){
+        override fun areItemsTheSame(oldItem: DetailOrder.Item, newItem: DetailOrder.Item): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: DetailOrder.Order.Item, newItem: DetailOrder.Order.Item): Boolean {
+        override fun areContentsTheSame(oldItem: DetailOrder.Item, newItem: DetailOrder.Item): Boolean {
             return oldItem == newItem
         }
     }

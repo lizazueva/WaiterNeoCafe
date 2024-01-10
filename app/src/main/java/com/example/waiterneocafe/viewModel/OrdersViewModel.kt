@@ -48,7 +48,7 @@ class OrdersViewModel(private val repository: Repository): ViewModel() {
         viewModelScope.launch {
             _detailOrder.postValue(Resource.Loading())
             try {
-                val response = repository.getDetailOrder(id)
+                val response = repository.getOrderDetail(id)
                 if (response.isSuccessful) {
                     val productResponse = response.body()
                     productResponse?.let { saveDetailOrder(it) }

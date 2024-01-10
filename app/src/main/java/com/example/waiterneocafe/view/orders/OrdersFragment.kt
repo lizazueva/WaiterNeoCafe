@@ -3,21 +3,35 @@ package com.example.waiterneocafe.view.orders
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.clientneowaiter.R
 import com.example.clientneowaiter.databinding.FragmentOrdersBinding
 import com.example.waiterneocafe.adapters.SliderAdapterOrders
+import com.example.waiterneocafe.model.notifications.NotificationsResponse
+import com.example.waiterneocafe.model.user.ClientId
+import com.example.waiterneocafe.utils.NotificationsWebSocket
+import com.example.waiterneocafe.utils.Resource
+import com.example.waiterneocafe.viewModel.NotificationsViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OrdersFragment : Fragment() {
 
     private lateinit var binding: FragmentOrdersBinding
+    private lateinit var webSocket: NotificationsWebSocket
+    private val notificationsViewModel: NotificationsViewModel by viewModel()
+    private var idClient = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +46,75 @@ class OrdersFragment : Fragment() {
 
         setUpListeners()
         viewPager()
+        setWebSocket()
+    }
+
+    private fun setWebSocket() {
+        notificationsViewModel.getIdClient()
+        notificationsViewModel.idClient.observe(viewLifecycleOwner){id->
+            when(id){
+                is Resource.Success -> {
+                    id.data?.let{id ->
+                        webSocket(id)
+                        idClient = id.id
+                    }
+                }
+
+                is Resource.Error -> {
+                    id.message?.let {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось получить данные",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+    private fun webSocket(id: ClientId) {
+        webSocket = NotificationsWebSocket(object : NotificationsWebSocket.NotificationsWebSocketListener {
+            override fun onMessage(message: String) {
+
+                activity?.runOnUiThread {
+                    try {
+
+                        val newNotifications = parseWebSocketMessage(message)
+                        if (newNotifications.isNotEmpty()){
+                            binding.imageNotification.setImageResource(R.drawable.icn_bell_active)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onClose() {
+                // Handle WebSocket close event
+            }
+
+            override fun onFailure(error: String) {
+                // Handle WebSocket failure
+            }
+        }, id.id)
+
+        webSocket.startWebSocket()
+
+    }
+    private fun parseWebSocketMessage(message: String): List<NotificationsResponse.Notifications> {
+        try {
+            val responseType = object : TypeToken<NotificationsResponse>() {}.type
+            val response = Gson().fromJson<NotificationsResponse>(message, responseType)
+            return response.notifications ?: emptyList()
+        } catch (e: JsonSyntaxException) {
+            e.printStackTrace()
+            // Логирование содержания сообщения для дальнейшего анализа
+            Log.e("NotificationsFragment", "Invalid JSON message: $message")
+            return emptyList()
+        }
     }
 
 

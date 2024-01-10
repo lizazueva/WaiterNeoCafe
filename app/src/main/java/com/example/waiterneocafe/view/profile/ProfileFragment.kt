@@ -108,7 +108,7 @@ class ProfileFragment : Fragment() {
         val formattedStartTime = outputFormat.format(startTimeDate)
         val formattedEndTime = outputFormat.format(endTimeDate)
         textView.text = "$text c $formattedStartTime по $formattedEndTime"
-        if(formattedStartTime > "17:00"){
+        if(formattedStartTime >= "17:00"){
             imageView.setImageResource(R.drawable.img_moon)
         }else{
             imageView.setImageResource(R.drawable.img_sun)

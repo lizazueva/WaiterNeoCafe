@@ -68,7 +68,9 @@ class RetrofitInstance {
                     path.endsWith("customers/my-id/")||
                     path.contains("notices/delete-client-notification") && request.method == "GET"||
                     path.endsWith("notices/clear-waiter-notifications")||
-                    path.contains("web/complete-order/") && request.method == "GET"
+                    path.contains("web/complete-order/") && request.method == "GET"||
+                    path.contains("customers/my-orders/") && request.method == "GET"
+
 
         }
     }

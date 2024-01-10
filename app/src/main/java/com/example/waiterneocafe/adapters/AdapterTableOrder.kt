@@ -12,9 +12,9 @@ import com.example.waiterneocafe.model.order.DetailOrder
 
 class AdapterTableOrder: RecyclerView.Adapter<AdapterTableOrder.ViewHolder>() {
 
-    var onItemClickListener: ListClickListener<DetailOrder.Order.Item>? = null
+    var onItemClickListener: ListClickListener<DetailOrder.Item>? = null
 
-    fun setOnItemClick(listClickListener: ListClickListener<DetailOrder.Order.Item>){
+    fun setOnItemClick(listClickListener: ListClickListener<DetailOrder.Item>){
         this.onItemClickListener = listClickListener
     }
 
@@ -69,12 +69,12 @@ class AdapterTableOrder: RecyclerView.Adapter<AdapterTableOrder.ViewHolder>() {
         fun onRemoveClick(data:T, position: Int)
     }
 
-    private val differCallBack = object: DiffUtil.ItemCallback<DetailOrder.Order.Item>(){
-        override fun areItemsTheSame(oldItem: DetailOrder.Order.Item, newItem: DetailOrder.Order.Item): Boolean {
+    private val differCallBack = object: DiffUtil.ItemCallback<DetailOrder.Item>(){
+        override fun areItemsTheSame(oldItem: DetailOrder.Item, newItem: DetailOrder.Item): Boolean {
             return oldItem.item_id == newItem.item_id
         }
 
-        override fun areContentsTheSame(oldItem: DetailOrder.Order.Item, newItem: DetailOrder.Order.Item): Boolean {
+        override fun areContentsTheSame(oldItem: DetailOrder.Item, newItem: DetailOrder.Item): Boolean {
             return oldItem == newItem
         }
     }

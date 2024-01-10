@@ -57,9 +57,9 @@ class OrderDetailFragment : Fragment() {
             findNavController().navigate(R.id.action_orderDetailFragment_to_notificationsFragment)
         }
         binding.btnAdd.setOnClickListener {
-            val orderStatus = detailInfoOrder?.order?.status
+            val orderStatus = detailInfoOrder?.status
             if (orderStatus == "new") {
-                val action = detailInfoOrder?.order?.let { it1 ->
+                val action = detailInfoOrder?.let { it1 ->
                     OrderDetailFragmentDirections.actionOrderDetailFragmentToTabForAddItemsFragment(
                         it1.id)
                 }
@@ -75,10 +75,10 @@ class OrderDetailFragment : Fragment() {
             }
         }
         binding.btnCloseTable.setOnClickListener {
-            val orderStatus = detailInfoOrder?.order?.status
+            val orderStatus = detailInfoOrder?.status
             //ready
             if (orderStatus == "ready") {
-                detailInfoOrder?.order?.let { it1 -> dialogCloseTable(it1) }
+                detailInfoOrder?.let { it1 -> dialogCloseTable(it1) }
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -89,7 +89,7 @@ class OrderDetailFragment : Fragment() {
         }
     }
 
-    private fun dialogCloseTable(items: DetailOrder.Order) {
+    private fun dialogCloseTable(items: DetailOrder) {
         val bindingOrder: BottomSheetCloseTableBinding =
             BottomSheetCloseTableBinding.inflate(LayoutInflater.from(context))
         val dialog = context?.let { BottomSheetDialog(it) }
@@ -137,7 +137,7 @@ class OrderDetailFragment : Fragment() {
 
     private fun setUpAdapterCloseTable(
         bindingOrder: BottomSheetCloseTableBinding,
-        items: List<DetailOrder.Order.Item>
+        items: List<DetailOrder.Item>
     ) {
         adapterCloseTable = AdapterCloseTable()
         bindingOrder.recyclerCloseTable.adapter = adapterCloseTable
@@ -187,7 +187,7 @@ class OrderDetailFragment : Fragment() {
     }
 
     private fun setDataDetail(detailInfo: DetailOrder) {
-        when(detailInfo.order.status) {
+        when(detailInfo.status) {
             "new" -> binding.imageStatus.setImageResource(R.drawable.img_ellipse_red).also {
                 binding.textStatusOrder.text = "Новый"
             }
@@ -204,30 +204,30 @@ class OrderDetailFragment : Fragment() {
                 binding.textStatusOrder.text = "Завершено"
             }
         }
-        binding.textWaiter.text = getString(R.string.text_waiter, detailInfo.order.waiter_name)
-        binding.textTable.text = getString(R.string.text_choosed, detailInfo.order.table.toString())
-        binding.textChoosed.text = getString(R.string.text_choosed, detailInfo.order.table.toString())
-        binding.textResultSum.text =getString(R.string.text_result_sum, detailInfo.order.total_price.toDouble().toInt())
-        binding.textOpenedTime.text = getString(R.string.text_opened_time, detailInfo.order.exact_time)
+        binding.textWaiter.text = getString(R.string.text_waiter, detailInfo.waiter_name)
+        binding.textTable.text = getString(R.string.text_choosed, detailInfo.table.toString())
+        binding.textChoosed.text = getString(R.string.text_choosed, detailInfo.table.toString())
+        binding.textResultSum.text =getString(R.string.text_result_sum, detailInfo.total_price.toDouble().toInt())
+        binding.textOpenedTime.text = getString(R.string.text_opened_time, detailInfo.exact_time)
 
-        setUpAdapter(detailInfo.order.items)
+        setUpAdapter(detailInfo.items)
 
 
     }
 
-    private fun setUpAdapter(items: List<DetailOrder.Order.Item>) {
+    private fun setUpAdapter(items: List<DetailOrder.Item>) {
         adapterOrderDetail = AdapterTableOrder()
         binding.recyclerOrder.adapter = adapterOrderDetail
         binding.recyclerOrder.layoutManager = LinearLayoutManager(requireContext())
         adapterOrderDetail.differ.submitList(items)
 
-        adapterOrderDetail.setOnItemClick(object: AdapterTableOrder.ListClickListener<DetailOrder.Order.Item>{
+        adapterOrderDetail.setOnItemClick(object: AdapterTableOrder.ListClickListener<DetailOrder.Item>{
 
-            override fun onAddClick(data: DetailOrder.Order.Item, position: Int) {
+            override fun onAddClick(data: DetailOrder.Item, position: Int) {
 
-                val orderStatus = detailInfoOrder?.order?.status
+                val orderStatus = detailInfoOrder?.status
                 if (orderStatus == "new") {
-                        observeAddItem(data, detailInfoOrder?.order?.id)
+                        observeAddItem(data, detailInfoOrder?.id)
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -238,8 +238,8 @@ class OrderDetailFragment : Fragment() {
 
             }
 
-            override fun onRemoveClick(data: DetailOrder.Order.Item, position: Int) {
-                val orderStatus = detailInfoOrder?.order?.status
+            override fun onRemoveClick(data: DetailOrder.Item, position: Int) {
+                val orderStatus = detailInfoOrder?.status
                 if (orderStatus == "new") {
                     observeDeleteItem(data.id)
                 } else {
@@ -277,7 +277,7 @@ class OrderDetailFragment : Fragment() {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun observeAddItem(data: DetailOrder.Order.Item, id: Int?) {
+    private fun observeAddItem(data: DetailOrder.Item, id: Int?) {
         if (id != null) {
             ordersViewModel.addItemOrder(id, data.item_id, data.is_ready_made_product, 1,
                 onSuccess = {

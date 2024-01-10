@@ -42,6 +42,8 @@ class Repository(private val api: Api) {
     suspend fun deleteNotification(id: Int) = RetrofitInstance.api.deleteNotification(id)
     suspend fun deleteAllNotification(id: Int) = RetrofitInstance.api.deleteAllNotification(id)
     suspend fun completeOrder(orderId: Int) = RetrofitInstance.api.completeOrder(orderId)
+    suspend fun getOrderDetail(id: Int) = RetrofitInstance.api.getDetailOrder1(id)
+
 
 
 

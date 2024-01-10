@@ -44,7 +44,7 @@ class StatusOrderFragment : Fragment() {
         adapterStatusOrders.differ.submitList(orders)
 
         adapterStatusOrders.onItemClickListener = { order ->
-            val id = order.table_number
+            val id = order.order_number
             val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailFragment(id)
             findNavController().navigate(action)
         }

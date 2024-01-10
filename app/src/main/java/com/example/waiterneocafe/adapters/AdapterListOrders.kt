@@ -39,7 +39,7 @@ class AdapterListOrders: RecyclerView.Adapter<AdapterListOrders.ViewHolder>(){
                 "new" -> imageStatus.setImageResource(R.drawable.img_ellipse_red).also {
                     textStatusOrder.text = "Новый"
                 }
-                "in progress" -> imageStatus.setImageResource(R.drawable.img_ellipse_yellow).also {
+                "in_progress" -> imageStatus.setImageResource(R.drawable.img_ellipse_yellow).also {
                     textStatusOrder.text = "В процессе"
                 }
                 "ready" -> imageStatus.setImageResource(R.drawable.img_ellipse_green).also {
