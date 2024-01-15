@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgr"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.waiterneocafe.view.newOrder.CategoryNewOrderFragment">
+    tools:context="com.neobis.waiterneocafe.view.newOrder.CategoryNewOrderFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_category"

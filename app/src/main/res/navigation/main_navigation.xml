@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.waiterneocafe.view.menu.MenuFragment"
+        android:name="com.neobis.waiterneocafe.view.menu.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/newOrderFragment"
-        android:name="com.example.waiterneocafe.view.newOrder.NewOrderFragment"
+        android:name="com.neobis.waiterneocafe.view.newOrder.NewOrderFragment"
         android:label="fragment_new_order"
         tools:layout="@layout/fragment_new_order" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.example.waiterneocafe.view.orders.OrdersFragment"
+        android:name="com.neobis.waiterneocafe.view.orders.OrdersFragment"
         android:label="fragment_orders"
         tools:layout="@layout/fragment_orders" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.example.waiterneocafe.view.notifications.NotificationsFragment"
+        android:name="com.neobis.waiterneocafe.view.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" >
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.waiterneocafe.view.profile.ProfileFragment"
+        android:name="com.neobis.waiterneocafe.view.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -85,7 +85,7 @@
     </fragment>
     <fragment
         android:id="@+id/newOrderChosedTableFragment"
-        android:name="com.example.waiterneocafe.view.newOrder.NewOrderChosedTableFragment"
+        android:name="com.neobis.waiterneocafe.view.newOrder.NewOrderChosedTableFragment"
         android:label="fragment_new_order_chosed_table"
         tools:layout="@layout/fragment_new_order_chosed_table" >
         <action
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderGoodFragment"
-        android:name="com.example.waiterneocafe.view.newOrder.OrderGoodFragment"
+        android:name="com.neobis.waiterneocafe.view.newOrder.OrderGoodFragment"
         android:label="fragment_order_good"
         tools:layout="@layout/fragment_order_good" >
         <action
@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="com.example.waiterneocafe.view.orders.OrderDetailFragment"
+        android:name="com.neobis.waiterneocafe.view.orders.OrderDetailFragment"
         android:label="fragment_order_detail"
         tools:layout="@layout/fragment_order_detail" >
         <action
@@ -133,7 +133,7 @@
     </fragment>
     <fragment
         android:id="@+id/tabForAddItemsFragment"
-        android:name="com.example.waiterneocafe.view.orders.TabForAddItemsFragment"
+        android:name="com.neobis.waiterneocafe.view.orders.TabForAddItemsFragment"
         android:label="fragment_tab_for_add_items"
         tools:layout="@layout/fragment_tab_for_add_items" >
         <action

@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name="com.example.waiterneocafe.di.MyApplication"
+        android:name="com.neobis.waiterneocafe.di.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,7 +15,7 @@
         android:theme="@style/Theme.ClientNeoWaiter"
         tools:targetApi="31">
         <activity
-            android:name="com.example.waiterneocafe.view.login.LoginActivity"
+            android:name="com.neobis.waiterneocafe.view.login.LoginActivity"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="com.example.waiterneocafe.MainActivity"
+            android:name="com.neobis.waiterneocafe.MainActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="false">
         </activity>

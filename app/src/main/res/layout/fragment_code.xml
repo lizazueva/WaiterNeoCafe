@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgr"
-    tools:context="com.example.waiterneocafe.view.login.CodeFragment">
+    tools:context="com.neobis.waiterneocafe.view.login.CodeFragment">
 
     <ImageView
         android:id="@+id/image_logo"

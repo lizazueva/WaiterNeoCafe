@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.clientneowaiter'
+    namespace 'com.neobis.clientneowaiter'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.clientneowaiter"
+        applicationId "com.neobis.clientneowaiter"
         minSdk 24
         targetSdk 33
         versionCode 1

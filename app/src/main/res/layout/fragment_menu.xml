@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgr"
-    tools:context="com.example.waiterneocafe.view.menu.MenuFragment">
+    tools:context="com.neobis.waiterneocafe.view.menu.MenuFragment">
 
     <ImageView
         android:id="@+id/image_profile"
